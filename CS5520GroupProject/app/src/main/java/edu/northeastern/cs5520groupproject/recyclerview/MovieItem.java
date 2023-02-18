@@ -15,6 +15,9 @@ public class MovieItem {
     private String name;
     private String releaseDate;
     private String imageLink;
+
+    private String type;
+
     ExecutorService executor = Executors.newFixedThreadPool(10);
 
 
@@ -29,6 +32,8 @@ public class MovieItem {
     public String getReleaseDate() {
         return releaseDate;
     }
+
+    public String getType() {return type;}
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;

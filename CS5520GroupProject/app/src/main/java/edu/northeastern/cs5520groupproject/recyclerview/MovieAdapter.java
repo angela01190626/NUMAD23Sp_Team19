@@ -42,6 +42,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         MovieItem movieItem = movieList.get(position);
         holder.movieTitle.setText(movieItem.getName());
         holder.movieDate.setText(movieItem.getReleaseDate());
+        // holder.icon = movieItem.getImage();
         //holder.moiveImage = movieItem.getImage();
         if (movieItem.getImage() != null && !movieItem.getImage().isEmpty()) {
             Picasso.get().load(movieItem.getImage()).into(holder.moiveImage);

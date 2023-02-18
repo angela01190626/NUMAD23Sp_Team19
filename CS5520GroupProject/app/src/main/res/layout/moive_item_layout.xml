@@ -36,14 +36,16 @@
         android:ellipsize="end"
         android:text="Jan 01, 2022"
         android:textSize="16sp" />
-    <TextView
-        android:id="@+id/movie_other"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+
+    <ImageView
+        android:id="@+id/movie_icon"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
         android:layout_below="@id/movie_release_date"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/movie_img"
-        android:ellipsize="end"
-        android:text="This should be one more attribute for the moive"
-        android:textSize="16sp" />
+        android:src="@drawable/movie_icon" />
+
 </RelativeLayout>
