@@ -8,13 +8,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MovieRequest {
+public class MovieRequest implements Callable<List<Map<String, String>>> {
 
-    public static List<Map<String, String>> searchMovieTitle(String title) {
+    private final String title;
+
+    public MovieRequest(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public List<Map<String, String>> call() throws Exception {
         List<Map<String, String>> res = new ArrayList<>();
         try {
             // URL object to search for the movie
@@ -40,7 +48,7 @@ public class MovieRequest {
             // The json object is nested, we create a map for each of the movies returned
             jsonNode.get("Search").elements().forEachRemaining(e -> {
                 Map<String, String> newMap = new HashMap<>();
-                e.fieldNames().forEachRemaining(name -> newMap.put(name, String.valueOf(e.get(name))));
+                e.fieldNames().forEachRemaining(name -> newMap.put(name, e.get(name).asText()));
                 res.add(newMap);
             });
         } catch (Exception e) {
@@ -48,16 +56,5 @@ public class MovieRequest {
         }
 
         return res;
-    }
-
-    // testing if I've got the correct values
-    public static void main(String[] args) {
-        List<Map<String, String>> temp = searchMovieTitle("harry potter");
-        temp.forEach(m -> {
-            for (String k: m.keySet()) {
-                System.out.println(k + ": " + m.get(k));
-            }
-            System.out.println();
-        });
     }
 }

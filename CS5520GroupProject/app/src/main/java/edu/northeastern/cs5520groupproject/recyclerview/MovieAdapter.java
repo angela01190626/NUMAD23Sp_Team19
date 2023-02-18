@@ -40,7 +40,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         MovieItem movieItem = movieList.get(position);
         holder.movieTitle.setText(movieItem.getName());
         holder.movieDate.setText(movieItem.getReleaseDate());
-        holder.moiveImage.setImageResource(movieItem.getImage());
+        holder.moiveImage = movieItem.getImage();
 
         Random random = new Random();
         int ran = random.nextInt(40)-10;
