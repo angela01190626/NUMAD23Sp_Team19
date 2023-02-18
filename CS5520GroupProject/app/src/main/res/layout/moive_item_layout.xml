@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl_item_container"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <ImageView
+        android:id="@+id/movie_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/movie_img"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Star Wars"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/movie_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@id/movie_title"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/movie_img"
+        android:ellipsize="end"
+        android:text="Jan 01, 2022"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/movie_other"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@id/movie_release_date"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/movie_img"
+        android:ellipsize="end"
+        android:text="This should be one more attribute for the moive"
+        android:textSize="16sp" />
+</RelativeLayout>
