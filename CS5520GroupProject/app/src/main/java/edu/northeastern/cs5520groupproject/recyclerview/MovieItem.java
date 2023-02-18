@@ -6,7 +6,6 @@ public class MovieItem {
     private int image;
 
 
-
     public String getName() {
         return name;
     }

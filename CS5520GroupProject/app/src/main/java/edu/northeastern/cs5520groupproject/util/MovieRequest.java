@@ -18,7 +18,7 @@ public class MovieRequest {
         List<Map<String, String>> res = new ArrayList<>();
         try {
             // URL object to search for the movie
-            URL url = new URL("http://www.omdbapi.com/?apikey=e03c49db&s=" + title);
+            URL url = new URL("https://www.omdbapi.com/?apikey=e03c49db&s=" + title);
             // HTTP connection
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
