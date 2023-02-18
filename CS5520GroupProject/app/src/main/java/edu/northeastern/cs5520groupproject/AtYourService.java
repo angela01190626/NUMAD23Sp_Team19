@@ -53,8 +53,9 @@ public class AtYourService extends AppCompatActivity {
                 // Log.d("aaaa", result);
                 response = MovieRequest.searchMovieTitle(result);
                 Log.d("ccc", response.toString());
-                // initView();
-                initMovieData(response);
+                initView();
+                //initMovieData(response);
+                initData();
                 initEvent();
             } catch (Exception e) {
                 System.out.println(e);
@@ -79,6 +80,24 @@ public class AtYourService extends AppCompatActivity {
         recyclerView.setAdapter(movieAdapter);
 
     }
+
+
+    private void initData(){
+        movieList = new ArrayList<>();
+        MovieItem movie1 = new MovieItem();
+        movie1.setName("Star War");
+        movie1.setName("Jan 01,2020");
+        movie1.setImage(R.drawable.test1);
+
+
+        MovieItem movie2 = new MovieItem();
+        movie2.setName("Star WarII ");
+        movie2.setName("Feb 01,2022");
+        movie2.setImage(R.drawable.test2);
+        movieList.add(movie1);
+        movieList.add(movie2);
+    }
+
 
     private void initMovieData(List<Map<String, String>> response) {
         movieList = new ArrayList<>();
