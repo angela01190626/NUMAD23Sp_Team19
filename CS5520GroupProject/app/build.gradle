@@ -41,4 +41,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

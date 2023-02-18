@@ -2,20 +2,14 @@ package edu.northeastern.cs5520groupproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +43,7 @@ public class AtYourService extends AppCompatActivity {
         setContentView(R.layout.activity_at_your_service);
         Bundle bundle = getIntent().getExtras();
         result = bundle.getString("KEY");
-        Callable<List<Map<String, String>>> callable = new MovieRequest("Harry");
+        Callable<List<Map<String, String>>> callable = new MovieRequest(result);
         Future<List<Map<String, String>>> future = executor.submit(callable);
         try {
             response = future.get();
@@ -101,21 +95,21 @@ public class AtYourService extends AppCompatActivity {
     }
 
 
-    private void initData(){
-        movieList = new ArrayList<>();
-        MovieItem movie1 = new MovieItem();
-        movie1.setName("Star War");
-        movie1.setName("Jan 01,2020");
-        //movie1.setImage(R.drawable.test1);
-
-
-        MovieItem movie2 = new MovieItem();
-        movie2.setName("Star WarII ");
-        movie2.setName("Feb 01,2022");
-        //movie2.setImage(R.drawable.test2);
-        movieList.add(movie1);
-        movieList.add(movie2);
-    }
+//    private void initData(){
+//        movieList = new ArrayList<>();
+//        MovieItem movie1 = new MovieItem(image);
+//        movie1.setName("Star War");
+//        movie1.setName("Jan 01,2020");
+//        //movie1.setImage(R.drawable.test1);
+//
+//
+//        MovieItem movie2 = new MovieItem(image);
+//        movie2.setName("Star WarII ");
+//        movie2.setName("Feb 01,2022");
+//        //movie2.setImage(R.drawable.test2);
+//        movieList.add(movie1);
+//        movieList.add(movie2);
+//    }
 
 
     private void initMovieData(List<Map<String, String>> response) {
