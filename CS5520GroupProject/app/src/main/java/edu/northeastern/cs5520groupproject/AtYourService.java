@@ -27,6 +27,7 @@ import edu.northeastern.cs5520groupproject.util.MovieRequest;
 public class AtYourService extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<MovieItem> movieList;
+    private MovieAdapter movieAdapter;
 
     TextView loading;
     String result;
@@ -68,7 +69,7 @@ public class AtYourService extends AppCompatActivity {
 
     private void initEvent() {
         // create movie Adapter and set adapter
-        MovieAdapter movieAdapter = new MovieAdapter(movieList, this);
+        movieAdapter = new MovieAdapter(movieList, this);
         recyclerView = findViewById(R.id.rlv);
         recyclerView.setHasFixedSize(true);
 
