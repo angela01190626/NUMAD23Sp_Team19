@@ -1,9 +1,13 @@
 package edu.northeastern.cs5520groupproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,7 +36,7 @@ import edu.northeastern.cs5520groupproject.util.MovieRequest;
 
 public class AtYourService extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private List<MovieItem> movieList;
+    private ArrayList<MovieItem> movieList;
     private MovieAdapter movieAdapter;
 
     TextView loading;
@@ -87,8 +91,25 @@ public class AtYourService extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (!movieList.isEmpty()) {
+            outState.putParcelableArrayList("key_list",movieList);
+        }
+    }
 
-//    private void initData(){
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        List<MovieItem> key_list = savedInstanceState.getParcelableArrayList("key_list");
+        if (key_list!=null&&!key_list.isEmpty()){
+            movieAdapter.setMovieList(key_list);
+            movieAdapter.notifyDataSetChanged();
+        }
+    }
+
+    //    private void initData(){
 //        movieList = new ArrayList<>();
 //        MovieItem movie1 = new MovieItem(image);
 //        movie1.setName("Star War");

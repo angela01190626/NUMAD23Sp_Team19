@@ -2,7 +2,11 @@ package edu.northeastern.cs5520groupproject.recyclerview;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
@@ -11,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class MovieItem {
+public class MovieItem implements Parcelable {
     private String name;
     private String releaseDate;
     private String imageLink;
@@ -20,6 +24,41 @@ public class MovieItem {
 
     ExecutorService executor = Executors.newFixedThreadPool(10);
 
+    public MovieItem(){
+
+    }
+
+    protected MovieItem(Parcel in) {
+        name = in.readString();
+        releaseDate = in.readString();
+        imageLink = in.readString();
+        type = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(releaseDate);
+        dest.writeString(imageLink);
+        dest.writeString(type);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<MovieItem> CREATOR = new Creator<MovieItem>() {
+        @Override
+        public MovieItem createFromParcel(Parcel in) {
+            return new MovieItem(in);
+        }
+
+        @Override
+        public MovieItem[] newArray(int size) {
+            return new MovieItem[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -55,6 +94,7 @@ public class MovieItem {
 //        }
 
     }
+
 
 //    class ImageRequest implements Callable<Void> {
 //        private final String link;
