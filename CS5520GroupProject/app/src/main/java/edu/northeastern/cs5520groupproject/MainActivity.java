@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(MainActivity.this, AtYourService.class);
+                Intent intent1 = new Intent(MainActivity.this, MovieEnter.class);
                 startActivity(intent1);
             }
         });

@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 import java.util.Random;
 
@@ -24,7 +26,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder>{
     public MovieAdapter(List<MovieItem> movieList, Context context) {
         this.movieList = movieList;
         this.mContext = context;
-        mLayoutInflater = LayoutInflater.from(mContext);;
+        mLayoutInflater = LayoutInflater.from(mContext);
     }
 
     @NonNull
@@ -40,7 +42,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder>{
         MovieItem movieItem = movieList.get(position);
         holder.movieTitle.setText(movieItem.getName());
         holder.movieDate.setText(movieItem.getReleaseDate());
-        holder.moiveImage.setImageResource(movieItem.getImage());
+        // holder.icon = movieItem.getImage();
+        //holder.moiveImage = movieItem.getImage();
+        if (movieItem.getImage() != null && !movieItem.getImage().isEmpty()) {
+            Picasso.get().load(movieItem.getImage()).into(holder.moiveImage);
+        }
 
         Random random = new Random();
         int ran = random.nextInt(40)-10;

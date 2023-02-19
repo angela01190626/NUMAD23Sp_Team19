@@ -18,11 +18,14 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     ImageView moiveImage;
     RelativeLayout lContainer;
 
+    String icon;
+
     public MovieViewHolder(@NonNull View itemView) {
         super(itemView);
         this.movieTitle = itemView.findViewById(R.id.movie_title);
-        this.movieDate = itemView.findViewById(R.id.movie_release_date);;
-        this.moiveImage = itemView.findViewById(R.id.movie_img);;
-        this.lContainer = itemView.findViewById(R.id.rl_item_container);;
+        this.movieDate = itemView.findViewById(R.id.movie_release_date);
+        this.moiveImage = itemView.findViewById(R.id.movie_img);
+        this.lContainer = itemView.findViewById(R.id.rl_item_container);
+        // this.icon = itemView.findViewById(R.id.movie_icon);
     }
 }
