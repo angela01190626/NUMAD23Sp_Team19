@@ -26,6 +26,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    aaptOptions {
+        // 是否开启 png 图片优化检查
+        cruncherEnabled false
+    }
 }
 
 dependencies {
