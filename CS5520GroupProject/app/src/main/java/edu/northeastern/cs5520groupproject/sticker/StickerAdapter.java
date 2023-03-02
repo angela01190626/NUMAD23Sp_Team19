@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.northeastern.cs5520groupproject.R;
@@ -19,9 +18,9 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder>  {
     public List<Integer> stickers;
     public int row_index;
 
-    public StickerAdapter(Context context) {
+    public StickerAdapter(List<Integer> stickers,Context context) {
         this.context = context;
-        this.stickers=new ArrayList<>();
+        this.stickers=stickers;
         this.row_index=-1;
     }
 

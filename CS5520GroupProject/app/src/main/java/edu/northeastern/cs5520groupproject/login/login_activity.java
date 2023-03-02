@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import edu.northeastern.cs5520groupproject.HomePageActivity;
 import edu.northeastern.cs5520groupproject.R;
 
 public class login_activity extends AppCompatActivity {
@@ -62,8 +63,8 @@ public class login_activity extends AppCompatActivity {
                                 // set token？
                             }
 
-                            // Intent intent = new Intent(login_activity.this, HomePageActivity.this); // update homepage的名字？
-                            // startActivity(intent);
+                             Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
+                             startActivity(intent);
                             Log.e("d", dataSnapshot.toString());
                         } else {
 
@@ -72,8 +73,8 @@ public class login_activity extends AppCompatActivity {
                           // how to add the user data into fireBase
                           fireBase.child("users").child(user.getUserName()).setValue(user);
 
-                          // Intent intent = new Intent(login_activity.this, HomePageActivity.this); // update homepage的名字？
-                          // startActivity(intent);
+                           Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
+                           startActivity(intent);
                         }
 
                     }
