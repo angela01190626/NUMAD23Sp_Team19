@@ -27,7 +27,7 @@
         android:layout_width="242dp"
         android:layout_height="61dp"
         android:gravity="center"
-        android:text="Please give a username"
+        android:hint="Please give a username"
         android:textColor="#0E0D0D"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
