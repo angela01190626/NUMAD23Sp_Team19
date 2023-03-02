@@ -33,6 +33,9 @@
         <activity
             android:name=".HomePageActivity"
             android:exported="false" />
+        <activity
+            android:name=".Count"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

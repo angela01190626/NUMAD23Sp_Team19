@@ -1,6 +1,8 @@
 package edu.northeastern.cs5520groupproject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -32,8 +34,8 @@ public class HomePageActivity  extends AppCompatActivity {
     public StickerAdapter stickerAdapter;
     public FriendAdapter friendAdapter;
     Button sendBtn;
-    Button checkHistoryBtn;
-    Button userStatBtn;
+    Button historyBtn;
+    Button countBtn;
     private static String CLIENT_REGISTRATION_TOKEN;
     private static String SERVER_KEY;
     private DatabaseReference fireBase;
@@ -51,6 +53,8 @@ protected void onCreate(Bundle savedInstanceState){
 
     setContentView(R.layout.sticker_homepage_layout);
 
+
+    // need debug for recycle view
     // sticker list
     stickerListRecyclerView = findViewById(R.id.stickerList);
     stickerListRecyclerView.setHasFixedSize(true);
@@ -81,6 +85,13 @@ protected void onCreate(Bundle savedInstanceState){
 
         }
 
+
+    });
+    countBtn = findViewById(R.id.count);
+    countBtn.setOnClickListener(view -> {
+        Intent i = new Intent(HomePageActivity.this, Count.class);
+        i.putExtra("user", currentUser.getUserName());
+        startActivity(i);
     });
 
 }
