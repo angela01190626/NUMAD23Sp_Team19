@@ -16,10 +16,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".login_activity"
+            android:name=".MovieEnter"
             android:exported="false" />
         <activity
-            android:name=".MovieEnter"
+            android:name=".login.login_activity"
             android:exported="false" />
         <activity
             android:name=".GroupProject"
