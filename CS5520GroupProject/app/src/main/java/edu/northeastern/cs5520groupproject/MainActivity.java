@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import edu.northeastern.cs5520groupproject.login.login_activity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(MainActivity.this, Firebase.class);
+                Intent intent1 = new Intent(MainActivity.this, login_activity.class);
                 startActivity(intent1);
             }
         });
