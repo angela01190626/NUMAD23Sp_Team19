@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/user_stat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.282"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.082" />
+
+    <ImageView
+        android:id="@+id/sticker1"
+        android:layout_width="166dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="36dp"
+        android:layout_weight="1"
+        android:background="#44ffffff"
+        android:src="@drawable/cat1"
+        app:layout_constraintBottom_toTopOf="@+id/sticker2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.94" />
+
+    <TextView
+        android:id="@+id/count1"
+        android:layout_width="28dp"
+        android:layout_height="37dp"
+        android:layout_weight="1"
+        android:text='0'
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.661"
+        app:layout_constraintStart_toEndOf="@+id/sticker1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.246" />
+
+    <ImageView
+        android:id="@+id/sticker2"
+        android:layout_width="166dp"
+        android:layout_height="66dp"
+        android:layout_weight="1"
+        android:background="#44ffffff"
+        android:src="@drawable/cat2"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="270dp" />
+
+    <TextView
+        android:id="@+id/count2"
+        android:layout_width="24dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:text='0'
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.663"
+        app:layout_constraintStart_toEndOf="@+id/sticker2"
+        app:layout_constraintTop_toBottomOf="@+id/count1"
+        app:layout_constraintVertical_bias="0.177" />
+
+    <ImageView
+        android:id="@+id/sticker3"
+        android:layout_width="166dp"
+        android:layout_height="66dp"
+        android:layout_weight="1"
+        android:background="#44ffffff"
+        android:src="@drawable/cat3"
+        app:layout_constraintBottom_toTopOf="@+id/sticker4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sticker2" />
+
+    <TextView
+        android:id="@+id/count3"
+        android:layout_width="19dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="110dp"
+        android:layout_weight="1"
+        android:text='0'
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.656"
+        app:layout_constraintStart_toEndOf="@+id/sticker3"
+        app:layout_constraintTop_toBottomOf="@+id/count2"
+        app:layout_constraintVertical_bias="0.006" />
+
+    <ImageView
+        android:id="@+id/sticker4"
+        android:layout_width="166dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="156dp"
+        android:layout_weight="1"
+
+        android:background="#44ffffff"
+        android:src="@drawable/cat4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/count4"
+        android:layout_width="38dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="99dp"
+        android:layout_weight="1"
+        android:text='0'
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintStart_toEndOf="@+id/sticker4"
+        app:layout_constraintTop_toBottomOf="@+id/count3"
+        app:layout_constraintVertical_bias="0.033" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
