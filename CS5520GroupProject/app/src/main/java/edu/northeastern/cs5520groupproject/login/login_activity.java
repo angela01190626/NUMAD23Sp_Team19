@@ -63,18 +63,20 @@ public class login_activity extends AppCompatActivity {
                                 // set token？
                             }
 
-                             Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
-                             startActivity(intent);
+                            Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
+                            intent.putExtra("user", input);
+                            startActivity(intent);
                             Log.e("d", dataSnapshot.toString());
                         } else {
 
-                          User user = new User(input, user_token);
+                            User user = new User(input, user_token);
 
-                          // how to add the user data into fireBase
-                          fireBase.child("users").child(user.getUserName()).setValue(user);
+                            // how to add the user data into fireBase
+                            fireBase.child("users").child(user.getUserName()).setValue(user);
 
-                           Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
-                           startActivity(intent);
+                            Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
+                            intent.putExtra("user", input);
+                            startActivity(intent);
                         }
 
                     }

@@ -23,7 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
+//import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class HomePageActivity  extends AppCompatActivity {
@@ -50,11 +50,12 @@ public class HomePageActivity  extends AppCompatActivity {
 protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
     fireBase = FirebaseDatabase.getInstance().getReference().child("users");
-
     setContentView(R.layout.sticker_homepage_layout);
+    Intent intent = getIntent();
+    String username = intent.getStringExtra("user");
+    currentUser = new User(username);
 
-
-    // need debug for recycle view
+            // need debug for recycle view
     // sticker list
     stickerListRecyclerView = findViewById(R.id.stickerList);
     stickerListRecyclerView.setHasFixedSize(true);
