@@ -8,12 +8,17 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import java.util.Map;
+
 import edu.northeastern.cs5520groupproject.login.User;
+import edu.northeastern.cs5520groupproject.service.FireBaseReadService;
 
 public class Count extends AppCompatActivity {
 
 
     private User currentUser;
+
+    private FireBaseReadService fireBaseReadService;
 
     TextView userName;
     TextView count1;
@@ -23,11 +28,12 @@ public class Count extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fireBaseReadService = new FireBaseReadService();
         setContentView(R.layout.sticker_count_layout);
-        currentUser = (User) getIntent().getSerializableExtra("user");
-        userName.setText(currentUser.getUserName());
-        // set username
         userName =findViewById(R.id.userName);
+        currentUser = new User(getIntent().getStringExtra("user"));
+        // set username
+        userName.setText(currentUser.getUserName());
 
         // set count for each sticker
         // 1. get
@@ -35,7 +41,11 @@ public class Count extends AppCompatActivity {
         count2 =findViewById(R.id.count2);
         count3 =findViewById(R.id.count3);
         count4 =findViewById(R.id.count4);
-        // set?
-
+        // read from
+        Map<Integer, Integer> result = fireBaseReadService.readCountOfUser(currentUser.getUserName());
+        count1.setText(String.valueOf(result.get(0)));
+        count2.setText(String.valueOf(result.get(1)));
+        count3.setText(String.valueOf(result.get(2)));
+        count4.setText(String.valueOf(result.get(3)));
     }
 }
