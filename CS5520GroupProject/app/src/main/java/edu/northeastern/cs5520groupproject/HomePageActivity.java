@@ -79,7 +79,7 @@ protected void onCreate(Bundle savedInstanceState){
     stickerListRecyclerView.setHasFixedSize(true);
     stickerListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     stickerAdapter = new StickerAdapter(stickers, this);
-
+    stickerListRecyclerView.setAdapter(stickerAdapter);
 
     // friend list - firebase
     friendListRecyclerView = findViewById(R.id.friendList);

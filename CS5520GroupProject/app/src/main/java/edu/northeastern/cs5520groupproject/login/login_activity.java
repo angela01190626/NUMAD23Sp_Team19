@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 
@@ -31,7 +32,7 @@ public class login_activity extends AppCompatActivity {
     private EditText username;
     private String input;
     private DatabaseReference fireBase;
-
+    private static String CLIENT_REGISTRATION_TOKEN;
     private String user_token;
 
 
@@ -45,6 +46,21 @@ public class login_activity extends AppCompatActivity {
 //        input = username.getText().toString();
         fireBase = FirebaseDatabase.getInstance().getReference();
 
+        // save token
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(login_activity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (CLIENT_REGISTRATION_TOKEN == null) {
+                        CLIENT_REGISTRATION_TOKEN = task.getResult();
+                    }
+                    Log.e("CLIENT_REGISTRATION_TOKEN", CLIENT_REGISTRATION_TOKEN);
+                    //Toast.makeText(LogIn.this, "CLIENT_REGISTRATION_TOKEN Existed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // create addListenerEvent to login button
         login.setOnClickListener(new View.OnClickListener() {
@@ -52,15 +68,16 @@ public class login_activity extends AppCompatActivity {
             public void onClick(View view) {
                 input = username.getText().toString();
 
-                // ？确定具体的database的名字 和他的child是否有用户输入的名字 - input是用户输入的名字，作为关键词去查找是否在数据库中
                 fireBase.child("users").child(input).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Log.e("d", dataSnapshot.toString());
                         if(dataSnapshot.exists()) {
                             User user = dataSnapshot.getValue(User.class);
-                            if(!Objects.equals(user.getToken(), user_token)) {
-                                // set token？
+
+                            if(!Objects.equals(Objects.requireNonNull(user).token, CLIENT_REGISTRATION_TOKEN)) {
+                                dataSnapshot.child("token").getRef().setValue(CLIENT_REGISTRATION_TOKEN);
+                                user.token = CLIENT_REGISTRATION_TOKEN;
                             }
 
                             Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
@@ -69,16 +86,24 @@ public class login_activity extends AppCompatActivity {
                             Log.e("d", dataSnapshot.toString());
                         } else {
 
-                            User user = new User(input, user_token);
+                            User user = new User(input, CLIENT_REGISTRATION_TOKEN);
 
-                            // how to add the user data into fireBase
-                            fireBase.child("users").child(user.getUserName()).setValue(user);
+                            // add the user data into fireBase
+                            fireBase.child("users").child(user.getUserName()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
 
-                            Intent intent = new Intent(login_activity.this, HomePageActivity.class); // update homepage的名字？
-                            intent.putExtra("user", input);
-                            startActivity(intent);
+                                    if (!task.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), ("Unable to reset " + input + " !"), Toast.LENGTH_SHORT).show();
+                                    } else {
+
+                                        Intent i = new Intent(login_activity.this, HomePageActivity.class);
+                                        i.putExtra("user", input);
+                                        startActivity(i);
+                                    }
+                                }
+                            });
                         }
-
                     }
 
                     @Override

@@ -15,4 +15,8 @@ public class StickerViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.sticker = itemView.findViewById(R.id.sticker);
     }
+
+    public void bindThisData(int imagePath) {
+        sticker.setImageResource(imagePath);
+    }
 }

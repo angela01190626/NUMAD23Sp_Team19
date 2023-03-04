@@ -9,15 +9,14 @@
         android:id="@+id/FriendText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="96dp"
         android:text="Friends"
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintHorizontal_bias="0.8" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stickerList"
@@ -30,6 +29,7 @@
         app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/stickerText"
+        app:layout_constraintVertical_bias="0.358"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -40,16 +40,17 @@
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/FriendText"
+        app:layout_constraintHorizontal_bias="0.311"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintHorizontal_bias="0.2" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendList"
-        android:layout_width="133dp"
-        android:layout_height="287dp"
+        android:layout_width="129dp"
+        android:layout_height="281dp"
+        android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,6 +59,7 @@
         app:layout_constraintHeight_percent=".875"
         app:layout_constraintStart_toEndOf="@id/stickerList"
         app:layout_constraintTop_toBottomOf="@+id/FriendText"
+        app:layout_constraintVertical_bias="0.179"
         tools:ignore="MissingConstraints" />
 
     <Button
