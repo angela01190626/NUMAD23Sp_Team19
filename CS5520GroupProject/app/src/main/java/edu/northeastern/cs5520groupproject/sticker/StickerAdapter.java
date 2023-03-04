@@ -42,7 +42,6 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder>  {
 
         if(row_index==position){
             holder.sticker.setBackgroundColor(Color.parseColor("lightgrey"));
-
         }
         else
         {

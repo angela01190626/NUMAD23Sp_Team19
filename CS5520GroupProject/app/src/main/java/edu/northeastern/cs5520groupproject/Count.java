@@ -22,13 +22,9 @@ import edu.northeastern.cs5520groupproject.service.FireBaseReadService;
 
 public class Count extends AppCompatActivity {
 
-
     private User currentUser;
-
     private FireBaseReadService fireBaseReadService;
-
     private DatabaseReference fireBaseCount;
-
     TextView userName;
     TextView count1;
     TextView count2;

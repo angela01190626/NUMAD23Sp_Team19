@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.friend.FriendAdapter;
+import edu.northeastern.cs5520groupproject.history.usage_history;
 import edu.northeastern.cs5520groupproject.login.User;
 import edu.northeastern.cs5520groupproject.service.FireBaseReadService;
 import edu.northeastern.cs5520groupproject.service.FireBaseUpdateService;
@@ -121,6 +122,13 @@ protected void onCreate(Bundle savedInstanceState){
     sendBtn.setOnClickListener(view -> {
         fireBaseUpdateService.update(currentUser.getUserName(), receiver, stickerToSend);
         //sendMessageService.sendMessageToDevice("fill target token here", currentUser.getUserName(), receiver, stickerToSend);
+    });
+
+    historyBtn.setOnClickListener(view -> {
+        Intent i = new Intent(HomePageActivity.this, usage_history.class);
+        i.putExtra("user", currentUser.getUserName());
+//
+        startActivity(i);
     });
 }
 }
