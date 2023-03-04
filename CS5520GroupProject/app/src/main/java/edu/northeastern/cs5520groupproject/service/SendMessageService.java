@@ -20,7 +20,7 @@ import edu.northeastern.cs5520groupproject.R;
 public class SendMessageService {
 
     private static final String TAG = "FCMActivity";
-    private static String SERVER_KEY = "AAAAFjdA9JQ:APA91bHxX80bPoXph8x3DzYjZ1dcy6OBll4n_6l-iILES6rUq_PdoFaFsoB7BUFuPCLiLZTIpIETL-wG9Q7kOaNksHE7ZCYyRmYiOVT19EEQQXkIQAuv606jXlSUt3yoC66fPVYmE6xv";
+    private static String SERVER_KEY = "AAAAKDZh-M4:APA91bHkBfQWw5bAdDkZfLoP439osIKSZojG0ftQWX_xGo-2MIxky47YBX4xK5-fXWQtkYvPCBWCCximbkFUIR4wjNmJj2b3Nvc6rm5uWbXCBy9lgP01D7qg27BEtYIglgBwSx3ZOUbS";
     // This is the client registration token
     private static String CLIENT_REGISTRATION_TOKEN;
 
