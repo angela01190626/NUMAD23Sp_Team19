@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "172711082190",
+    "project_id": "week8-assignment",
+    "storage_bucket": "week8-assignment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172711082190:android:a286263542519a8d4ef89f",
+        "android_client_info": {
+          "package_name": "edu.northeastern.cs5520groupproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172711082190-3doo80fsh54q7khio4d8tnhkeg7t7o0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBB8wKUrIaiju3NUZDef8pz9JGUtnZ9gI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172711082190-3doo80fsh54q7khio4d8tnhkeg7t7o0b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
