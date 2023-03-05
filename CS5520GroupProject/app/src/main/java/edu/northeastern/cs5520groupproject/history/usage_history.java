@@ -2,6 +2,7 @@ package edu.northeastern.cs5520groupproject.history;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +53,8 @@ public class usage_history extends AppCompatActivity {
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         historyAdaptor = new UsageAdapter(historyList, this);
         historyRecyclerView.setAdapter(historyAdaptor);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(historyRecyclerView.getContext(), 1);
+        historyRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     public void initHistoryList() {

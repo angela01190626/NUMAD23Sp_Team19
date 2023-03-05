@@ -42,16 +42,15 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder>  {
         holder.itemView.setOnClickListener(view -> {
             row_index=position;
             notifyDataSetChanged();
+            listener.onStickerClicked(position);
         });
 
         if(row_index==position){
             holder.sticker.setBackgroundColor(Color.parseColor("lightgrey"));
-        }
-        else
-        {
+        } else {
             holder.sticker.setBackgroundColor(Color.parseColor("white"));
         }
-        holder.itemView.setOnClickListener(view -> listener.onStickerClicked(position));
+        //holder.itemView.setOnClickListener(view -> listener.onStickerClicked(position));
     }
 
     @Override

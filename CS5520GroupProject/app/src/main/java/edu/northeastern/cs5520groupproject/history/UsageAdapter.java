@@ -1,6 +1,8 @@
 package edu.northeastern.cs5520groupproject.history;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -19,9 +21,12 @@ public class UsageAdapter extends RecyclerView.Adapter<UsageViewHolder>{
     private List<History> historyList;
     private final Context context;
 
+    public int row_index;
+
     public UsageAdapter(List<History> historyList, Context context) {
         this.historyList = historyList;
         this.context = context;
+        row_index = -1;
     }
 
     @NonNull
@@ -31,8 +36,11 @@ public class UsageAdapter extends RecyclerView.Adapter<UsageViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UsageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UsageViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.bindThisData(historyList.get(position));
+        holder.itemView.setOnClickListener(view -> {
+            row_index=position;
+        });
     }
 
     @Override

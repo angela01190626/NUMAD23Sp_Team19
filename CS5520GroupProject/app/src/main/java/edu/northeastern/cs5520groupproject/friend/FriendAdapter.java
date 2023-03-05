@@ -48,16 +48,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder> {
         holder.itemView.setOnClickListener(view -> {
             row_index=position;
             notifyDataSetChanged();
+            listener.onFriendClicked(friends.get(position).getUserName());
         });
+        //holder.itemView.setOnClickListener(view -> listener.onFriendClicked(friends.get(position).getUserName()));
 
         if(row_index==position){
             holder.username.setBackgroundColor(Color.parseColor("lightgrey"));
-        }
-        else
-        {
+        } else {
             holder.username.setBackgroundColor(Color.parseColor("white"));
         }
-        holder.itemView.setOnClickListener(view -> listener.onFriendClicked(friends.get(position).getUserName()));
     }
 
 
