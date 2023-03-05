@@ -44,7 +44,7 @@ public class usage_history extends AppCompatActivity {
         currentUser = new User(getIntent().getStringExtra("user"));
 
         // set username
-        userName.setText(currentUser.getUserName());
+        userName.setText("The sticker received history of " + currentUser.getUserName());
 
         initHistoryList();
 

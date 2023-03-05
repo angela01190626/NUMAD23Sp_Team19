@@ -51,7 +51,7 @@ public class login_activity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (!task.isSuccessful()) {
-                    Toast.makeText(login_activity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(login_activity.this, "Something is wrong!", Toast.LENGTH_SHORT).show();
                 } else {
                     if (CLIENT_REGISTRATION_TOKEN == null) {
                         CLIENT_REGISTRATION_TOKEN = task.getResult();

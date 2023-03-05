@@ -2,8 +2,10 @@ package edu.northeastern.cs5520groupproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import edu.northeastern.cs5520groupproject.friend.FriendAdapter;
 import edu.northeastern.cs5520groupproject.history.usage_history;
@@ -58,8 +61,8 @@ public class HomePageActivity extends AppCompatActivity implements ClickListener
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        receiver = "555";
-        stickerToSend = 0;
+        receiver = "";
+        stickerToSend = -1;
 
         setContentView(R.layout.sticker_homepage_layout);
         // buttons
@@ -123,6 +126,14 @@ public class HomePageActivity extends AppCompatActivity implements ClickListener
         sendBtn.setOnClickListener(view -> {
             fireBaseUpdateService.update(currentUser.getUserName(), receiver, stickerToSend);
             //sendMessageService.sendMessageToDevice("fill target token here", currentUser.getUserName(), receiver, stickerToSend);
+            if (!Objects.equals(receiver, "") && stickerToSend != -1) {
+                Toast.makeText(HomePageActivity.this,
+                        "The sticker is successfully sent to " + receiver, Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(HomePageActivity.this,
+                        "Make sure you click both sticker and the friend you want to send to", Toast.LENGTH_LONG).show();
+            }
         });
 
         historyBtn.setOnClickListener(view -> {

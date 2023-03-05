@@ -28,7 +28,7 @@ public class UsageViewHolder extends RecyclerView.ViewHolder {
     public void bindThisData(History his) {
         int[] stickerList = new int[]{R.drawable.cat1, R.drawable.cat2,  R.drawable.cat3,  R.drawable.cat4};
         sender.setText(his.sender);
-        sendTime.setText(his.date.substring(5, 16));
+        sendTime.setText(his.date.substring(5, 10) + " " + his.date.substring(11, 13) + ":"+ his.date.substring(14, 16));
         sticker.setImageResource(stickerList[his.stickerId]);
     }
 }
