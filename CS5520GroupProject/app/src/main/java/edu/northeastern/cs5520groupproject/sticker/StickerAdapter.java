@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import edu.northeastern.cs5520groupproject.ClickListener;
 import edu.northeastern.cs5520groupproject.R;
 
 public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder>  {
@@ -18,10 +19,13 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder>  {
     public List<Integer> stickers;
     public int row_index;
 
-    public StickerAdapter(List<Integer> stickers,Context context) {
+    private ClickListener listener;
+
+    public StickerAdapter(List<Integer> stickers, Context context, ClickListener listener) {
         this.context = context;
         this.stickers=stickers;
         this.row_index=-1;
+        this.listener = listener;
     }
 
 
@@ -47,7 +51,7 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder>  {
         {
             holder.sticker.setBackgroundColor(Color.parseColor("white"));
         }
-
+        holder.itemView.setOnClickListener(view -> listener.onStickerClicked(position));
     }
 
     @Override

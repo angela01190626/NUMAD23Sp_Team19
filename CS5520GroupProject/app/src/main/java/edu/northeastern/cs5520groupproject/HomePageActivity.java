@@ -31,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 //import com.google.firebase.messaging.FirebaseMessaging;
 
 
-public class HomePageActivity  extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity implements ClickListener {
     RecyclerView friendListRecyclerView;
     RecyclerView stickerListRecyclerView;
     List<User> friends = new ArrayList<>();
@@ -50,85 +50,96 @@ public class HomePageActivity  extends AppCompatActivity {
 
     private User currentUser;
     private int stickerToSend;
-    private String receiver = "555";
+    private String receiver;
     private String date;
     public int message = -1;
 
 
-protected void onCreate(Bundle savedInstanceState){
-    super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.sticker_homepage_layout);
-    // buttons
-    countBtn = findViewById(R.id.count);
-    sendBtn = findViewById(R.id.send);
-    historyBtn = findViewById(R.id.history);
+        receiver = "555";
+        stickerToSend = 0;
 
-    // services
-    fireBaseUpdateService = new FireBaseUpdateService();
-    fireBaseReadService = new FireBaseReadService();
-    sendMessageService = new SendMessageService();
+        setContentView(R.layout.sticker_homepage_layout);
+        // buttons
+        countBtn = findViewById(R.id.count);
+        sendBtn = findViewById(R.id.send);
+        historyBtn = findViewById(R.id.history);
 
-    fireBase = FirebaseDatabase.getInstance().getReference().child("users");
-    Intent intent = getIntent();
-    String username = intent.getStringExtra("user");
-    currentUser = new User(username);
+        // services
+        fireBaseUpdateService = new FireBaseUpdateService();
+        fireBaseReadService = new FireBaseReadService();
+        sendMessageService = new SendMessageService();
 
-            // need debug for recycle view
-    // sticker list
-    stickerListRecyclerView = findViewById(R.id.stickerList);
-    stickerListRecyclerView.setHasFixedSize(true);
-    stickerListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    stickerAdapter = new StickerAdapter(stickers, this);
-    stickerListRecyclerView.setAdapter(stickerAdapter);
+        fireBase = FirebaseDatabase.getInstance().getReference().child("users");
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("user");
+        currentUser = new User(username);
 
-    // friend list - firebase
-    friendListRecyclerView = findViewById(R.id.friendList);
-    friendListRecyclerView.setHasFixedSize(true);
-    friendListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    fireBase.addListenerForSingleValueEvent(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            snapshot.getChildren().forEach(child -> {
-                if (!child.getValue(User.class).getUserName().equals(currentUser.getUserName())) {
-                    friends.add(child.getValue(User.class));
-                }
-            });
+                // need debug for recycle view
+        // sticker list
+        stickerListRecyclerView = findViewById(R.id.stickerList);
+        stickerListRecyclerView.setHasFixedSize(true);
+        stickerListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        stickerAdapter = new StickerAdapter(stickers, this, this);
+        stickerListRecyclerView.setAdapter(stickerAdapter);
 
-            friendAdapter = new FriendAdapter(friends, friendListRecyclerView.getContext());
-            friendListRecyclerView.setAdapter(friendAdapter);
+        // friend list - firebase
+        friendListRecyclerView = findViewById(R.id.friendList);
+        friendListRecyclerView.setHasFixedSize(true);
+        friendListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        friendAdapter = new FriendAdapter(friends, friendListRecyclerView.getContext(), this);
 
-        }
+        fireBase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.getChildren().forEach(child -> {
+                    if (!child.getValue(User.class).getUserName().equals(currentUser.getUserName())) {
+                        friends.add(child.getValue(User.class));
+                    }
+                });
+                friendAdapter.setFriends(friends);
+                friendListRecyclerView.setAdapter(friendAdapter);
+            }
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        }
+            }
+        });
 
+        countBtn.setOnClickListener(view -> {
+            Intent i = new Intent(HomePageActivity.this, Count.class);
+            i.putExtra("user", currentUser.getUserName());
+    //        Map<Integer, Integer> result = fireBaseReadService.readCountOfUser(currentUser.getUserName());
+    //        i.putExtra("count1", String.valueOf(result.getOrDefault(0, 0)));
+    //        i.putExtra("count2", String.valueOf(result.getOrDefault(1, 0)));
+    //        i.putExtra("count3", String.valueOf(result.getOrDefault(2, 0)));
+    //        i.putExtra("count4", String.valueOf(result.getOrDefault(3, 0)));
+            startActivity(i);
+        });
 
-    });
+        sendBtn.setOnClickListener(view -> {
+            fireBaseUpdateService.update(currentUser.getUserName(), receiver, stickerToSend);
+            //sendMessageService.sendMessageToDevice("fill target token here", currentUser.getUserName(), receiver, stickerToSend);
+        });
 
-    countBtn.setOnClickListener(view -> {
-        Intent i = new Intent(HomePageActivity.this, Count.class);
-        i.putExtra("user", currentUser.getUserName());
-//        Map<Integer, Integer> result = fireBaseReadService.readCountOfUser(currentUser.getUserName());
-//        i.putExtra("count1", String.valueOf(result.getOrDefault(0, 0)));
-//        i.putExtra("count2", String.valueOf(result.getOrDefault(1, 0)));
-//        i.putExtra("count3", String.valueOf(result.getOrDefault(2, 0)));
-//        i.putExtra("count4", String.valueOf(result.getOrDefault(3, 0)));
-        startActivity(i);
-    });
+        historyBtn.setOnClickListener(view -> {
+            Intent i = new Intent(HomePageActivity.this, usage_history.class);
+            i.putExtra("user", currentUser.getUserName());
+    //
+            startActivity(i);
+        });
+    }
 
-    sendBtn.setOnClickListener(view -> {
-        fireBaseUpdateService.update(currentUser.getUserName(), receiver, stickerToSend);
-        //sendMessageService.sendMessageToDevice("fill target token here", currentUser.getUserName(), receiver, stickerToSend);
-    });
+    @Override
+    public void onStickerClicked(int stickerId) {
+        stickerToSend = stickerId;
+    }
 
-    historyBtn.setOnClickListener(view -> {
-        Intent i = new Intent(HomePageActivity.this, usage_history.class);
-        i.putExtra("user", currentUser.getUserName());
-//
-        startActivity(i);
-    });
-}
+    @Override
+    public void onFriendClicked(String username) {
+        receiver = username;
+    }
 }
