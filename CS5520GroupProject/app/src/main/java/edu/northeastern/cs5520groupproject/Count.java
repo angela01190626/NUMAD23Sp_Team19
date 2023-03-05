@@ -39,7 +39,7 @@ public class Count extends AppCompatActivity {
         userName = findViewById(R.id.userName);
         currentUser = new User(getIntent().getStringExtra("user"));
         // set username
-        userName.setText("The sticker sending records of " + currentUser.getUserName());
+        userName.setText("Counts of Stickers Sent of " + currentUser.getUserName());
 
         // set count for each sticker
         // 1. get
