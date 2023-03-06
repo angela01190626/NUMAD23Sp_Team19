@@ -37,8 +37,8 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull StickerViewHolder holder, @SuppressLint("RecyclerView") int position) {
-//        holder.sticker.setImageResource(stickers.get(position));
-        holder.bindThisData(stickers.get(position));
+        holder.sticker.setImageResource(stickers.get(position));
+        // holder.bindThisData(stickers.get(position));
         holder.itemView.setOnClickListener(view -> {
             row_index=position;
             notifyDataSetChanged();

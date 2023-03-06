@@ -15,7 +15,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Sender:"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:layout_alignEnd="@+id/sender"
         android:layout_marginEnd="-84dp"
         android:text=""
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/send_time"
@@ -38,7 +38,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Time:"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <TextView
@@ -51,15 +51,15 @@
         android:layout_marginEnd="-110dp"
         android:layout_marginBottom="-82dp"
         android:text=""
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/imageSticker"
         android:layout_width="50dp"
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginEnd="40dp"
         android:layout_alignEnd="@+id/sticker"
         app:srcCompat="@drawable/cat1" />
 
@@ -69,11 +69,11 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/sendTime"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="-110dp"
+        android:layout_marginEnd="-100dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Sticker:"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
 

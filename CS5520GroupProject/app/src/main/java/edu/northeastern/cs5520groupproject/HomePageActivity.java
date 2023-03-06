@@ -85,7 +85,7 @@ public class HomePageActivity extends AppCompatActivity implements ClickListener
         stickerListRecyclerView = findViewById(R.id.stickerList);
         stickerListRecyclerView.setHasFixedSize(true);
         stickerListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        stickerAdapter = new StickerAdapter(stickers, this, this);
+        stickerAdapter = new StickerAdapter(stickers, stickerListRecyclerView.getContext(), this);
         stickerListRecyclerView.setAdapter(stickerAdapter);
 
         // friend list - firebase
@@ -93,6 +93,7 @@ public class HomePageActivity extends AppCompatActivity implements ClickListener
         friendListRecyclerView.setHasFixedSize(true);
         friendListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         friendAdapter = new FriendAdapter(friends, friendListRecyclerView.getContext(), this);
+
 
         fireBase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
