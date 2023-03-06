@@ -9,19 +9,18 @@
         android:id="@+id/FriendText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="96dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="68dp"
         android:text="Friends"
         android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stickerList"
-        android:layout_width="140dp"
-        android:layout_height="394dp"
+        android:layout_width="145dp"
+        android:layout_height="285dp"
         android:padding="5dp"
         app:layout_constraintBottom_toTopOf="@id/send"
         app:layout_constraintEnd_toStartOf="@id/friendList"
@@ -29,27 +28,26 @@
         app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/stickerText"
-        app:layout_constraintVertical_bias="0.358"
+        app:layout_constraintVertical_bias="0.236"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/stickerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
         android:text="Stickers"
         android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/FriendText"
-        app:layout_constraintHorizontal_bias="0.311"
+        app:layout_constraintHorizontal_bias="0.355"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendList"
-        android:layout_width="129dp"
-        android:layout_height="281dp"
+        android:layout_width="145dp"
+        android:layout_height="285dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:padding="5dp"
@@ -59,7 +57,7 @@
         app:layout_constraintHeight_percent=".875"
         app:layout_constraintStart_toEndOf="@id/stickerList"
         app:layout_constraintTop_toBottomOf="@+id/FriendText"
-        app:layout_constraintVertical_bias="0.179"
+        app:layout_constraintVertical_bias="0.204"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -68,11 +66,10 @@
         android:layout_height="wrap_content"
         android:text="send"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/history"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintHorizontal_bias="0.1"/>
+        app:layout_constraintVertical_bias="0.882" />
 
     <Button
         android:id="@+id/history"
@@ -80,11 +77,11 @@
         android:layout_height="wrap_content"
         android:text="history"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/count"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/send"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintVertical_bias="0.882" />
 
     <Button
         android:id="@+id/count"
@@ -93,10 +90,9 @@
         android:text="count"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/history"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintHorizontal_bias="0.9" />
+        app:layout_constraintVertical_bias="0.882" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
