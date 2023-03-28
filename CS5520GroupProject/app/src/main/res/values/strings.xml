@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">CS5520GroupProject</string>
+    <string name="title_activity_pe_homepage">PE_Homepage_activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile" >Profile</string>
+    <string name="title_message">Message</string>
+    <string name="title_post">Post</string>
+    <string name="title_me">Me</string>
 </resources>
