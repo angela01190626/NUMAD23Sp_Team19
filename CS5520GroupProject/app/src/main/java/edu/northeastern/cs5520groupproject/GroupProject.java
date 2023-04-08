@@ -42,6 +42,9 @@ public class GroupProject extends AppCompatActivity {
 
                     loadFragment(new HomeFragment());
                     return true;
+                case R.id.navigation_message:
+                    loadFragment(new ChatFragment());
+                    return true;
 //
 //                case R.id.post:
 //                    // 在这里处理发布图标点击

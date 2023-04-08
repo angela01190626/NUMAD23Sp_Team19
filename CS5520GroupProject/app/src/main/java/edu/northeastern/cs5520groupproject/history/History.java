@@ -1,6 +1,5 @@
 package edu.northeastern.cs5520groupproject.history;
 
-import android.os.Parcel;
 
 public class History {
 
