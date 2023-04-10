@@ -20,8 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView.ImageAdapter;
-import edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView.SpaceItemDecoration;
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.ProfileFragment;
 
 
 public class GroupProject extends AppCompatActivity {

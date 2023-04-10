@@ -1,4 +1,4 @@
-package edu.northeastern.cs5520groupproject;
+package edu.northeastern.cs5520groupproject.PE_Circle.UI.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,15 +10,21 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import edu.northeastern.cs5520groupproject.R;
+import edu.northeastern.cs5520groupproject.service.FireBaseReadService;
+
 public class ProfileFragment extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
-
+    FireBaseReadService fireBaseReadService;
+    DatabaseReference fireBaseCount;
     TextView profileEmail;
     TextView joinSince;
 
@@ -35,9 +41,10 @@ public class ProfileFragment extends Fragment {
         joinSince= view.findViewById(R.id.joinDate);
         joinSince.setText("Join Since: "+strDate);
 
+//        fireBaseReadService = new FireBaseReadService();
+//        fireBaseCount = FirebaseDatabase.getInstance().getReference().child("plan");
+
         return view ;
-
-
 
     }
 }
