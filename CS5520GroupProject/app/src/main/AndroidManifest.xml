@@ -16,10 +16,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".PE_Homepage_activity"
-            android:exported="false"
-            android:label="@string/title_activity_pe_homepage" />
-        <activity
             android:name=".history.usage_history"
             android:exported="false" />
         <activity
