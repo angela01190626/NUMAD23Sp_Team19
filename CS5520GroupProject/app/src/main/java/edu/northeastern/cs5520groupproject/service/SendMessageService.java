@@ -1,7 +1,6 @@
 package edu.northeastern.cs5520groupproject.service;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -12,10 +11,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.northeastern.cs5520groupproject.HomePageActivity;
-import edu.northeastern.cs5520groupproject.MainActivity;
 import edu.northeastern.cs5520groupproject.util.Utils;
-import edu.northeastern.cs5520groupproject.R;
 
 public class SendMessageService {
 

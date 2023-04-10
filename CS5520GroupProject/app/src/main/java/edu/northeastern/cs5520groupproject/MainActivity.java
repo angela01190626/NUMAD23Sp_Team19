@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import edu.northeastern.cs5520groupproject.legacy.About;
+import edu.northeastern.cs5520groupproject.legacy.MovieEnter;
 import edu.northeastern.cs5520groupproject.login.login_activity;
 
 public class MainActivity extends AppCompatActivity {

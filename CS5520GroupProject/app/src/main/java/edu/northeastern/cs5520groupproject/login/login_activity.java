@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +22,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 
-import edu.northeastern.cs5520groupproject.HomePageActivity;
+import edu.northeastern.cs5520groupproject.legacy.HomePageActivity;
 import edu.northeastern.cs5520groupproject.R;
 
 public class login_activity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package edu.northeastern.cs5520groupproject;
+package edu.northeastern.cs5520groupproject.legacy;
 
 
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
+import edu.northeastern.cs5520groupproject.R;
 import edu.northeastern.cs5520groupproject.login.User;
 import edu.northeastern.cs5520groupproject.service.FireBaseReadService;
 
