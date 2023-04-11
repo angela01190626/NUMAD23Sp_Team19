@@ -2,6 +2,7 @@ package edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.northeastern.cs5520groupproject.R;
+import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder> {
 
@@ -35,6 +37,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder> {
         holder.bindThisData(chatList.get(position));
         holder.itemView.setOnClickListener(view -> {
             row_index = position;
+            // 调用chatMessage活动
+            Intent chatIntent = new Intent(view.getContext(), chatMessageActivity.class);
+            view.getContext().startActivity(chatIntent);
         });
     }
 

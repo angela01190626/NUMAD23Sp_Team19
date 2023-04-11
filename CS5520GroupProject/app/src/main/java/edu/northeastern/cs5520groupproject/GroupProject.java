@@ -21,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.ProfileFragment;
+import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
 
 
 public class GroupProject extends AppCompatActivity {
@@ -88,6 +89,7 @@ public class GroupProject extends AppCompatActivity {
                         return true;
                     case R.id.navigation_message:
                         loadFragment(new ChatFragment());
+                        //Intent intent = new Intent(this, chatMessageActivity.class);
                         return true;
 //
                     case R.id.navigation_post:
