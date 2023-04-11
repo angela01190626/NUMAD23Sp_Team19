@@ -1,32 +1,17 @@
-package edu.northeastern.cs5520groupproject;
+package edu.northeastern.cs5520groupproject.legacy;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
-import edu.northeastern.cs5520groupproject.recyclerview.MovieAdapter;
-import edu.northeastern.cs5520groupproject.recyclerview.MovieItem;
+import edu.northeastern.cs5520groupproject.AtYourService;
+import edu.northeastern.cs5520groupproject.R;
 
 public class MovieEnter extends AppCompatActivity {
 

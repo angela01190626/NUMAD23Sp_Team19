@@ -1,9 +1,7 @@
-package edu.northeastern.cs5520groupproject;
+package edu.northeastern.cs5520groupproject.legacy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -15,9 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
+import edu.northeastern.cs5520groupproject.ClickListener;
+import edu.northeastern.cs5520groupproject.R;
 import edu.northeastern.cs5520groupproject.friend.FriendAdapter;
 import edu.northeastern.cs5520groupproject.history.usage_history;
 import edu.northeastern.cs5520groupproject.login.User;
@@ -25,7 +24,7 @@ import edu.northeastern.cs5520groupproject.service.FireBaseReadService;
 import edu.northeastern.cs5520groupproject.service.FireBaseUpdateService;
 import edu.northeastern.cs5520groupproject.service.SendMessageService;
 import edu.northeastern.cs5520groupproject.sticker.StickerAdapter;
-import com.google.firebase.database.ChildEventListener;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -29,7 +29,7 @@
             android:name=".history.usage_history"
             android:exported="false" />
         <activity
-            android:name=".MovieEnter"
+            android:name=".legacy.MovieEnter"
             android:exported="false" />
         <activity
             android:name=".login.login_activity"
@@ -44,10 +44,10 @@
             android:name=".AtYourService"
             android:exported="false" />
         <activity
-            android:name=".HomePageActivity"
+            android:name=".legacy.HomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".Count"
+            android:name=".legacy.Count"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
