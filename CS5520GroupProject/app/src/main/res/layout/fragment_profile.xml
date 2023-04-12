@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/profile_layout">
 
+
     <TextView
         android:id="@+id/profileEmail"
         android:layout_width="362dp"
@@ -14,45 +15,74 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.673"
+        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085" />
-
+        app:layout_constraintVertical_bias="0.063" />
 
     <TextView
         android:id="@+id/joinDate"
-        android:layout_width="373dp"
-        android:layout_height="67dp"
+        android:layout_width="371dp"
+        android:layout_height="47dp"
         android:text="Join since:"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.868"
+        app:layout_constraintHorizontal_bias="0.246"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.198" />
+        app:layout_constraintVertical_bias="0.173" />
 
     <TextView
         android:id="@+id/myPlan"
-        android:layout_width="343dp"
-        android:layout_height="63dp"
+        android:layout_width="374dp"
+        android:layout_height="59dp"
         android:text="My Plans:"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
+        app:layout_constraintHorizontal_bias="0.249"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.402" />
+        app:layout_constraintVertical_bias="0.271" />
+
+    <EditText
+        android:id="@+id/et_plan"
+        android:layout_width="261dp"
+        android:layout_height="67dp"
+        android:hint="Enter Plan Title"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92" />
+
+    <Button
+        android:id="@+id/btn_add_plan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Plan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/planList"
-        android:layout_width="145dp"
-        android:layout_height="285dp"
-        android:layout_marginBottom="708dp"
+        android:layout_width="283dp"
+        android:layout_height="390dp"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="83dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.606"
+        tools:ignore="MissingConstraints" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
