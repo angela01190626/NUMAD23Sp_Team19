@@ -44,11 +44,24 @@ public class GroupProject extends AppCompatActivity {
         signInLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        Toast.makeText(this,
-                                        "Successfully signed in. Welcome!",
-                                        Toast.LENGTH_LONG)
-                                .show();
-                        Load();
+
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("user_final");
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("uid", uid);
+                        user.put("email", email);
+                        usersRef.child(uid).setValue(user)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(this,
+                                                    "Successfully signed in. Welcome!",
+                                                    Toast.LENGTH_LONG)
+                                            .show();
+                                    Load();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Handle the error...
+                                });
                     } else {
                         Toast.makeText(this,
                                         "We couldn't sign you in. Please try again later.",
