@@ -19,6 +19,8 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 //import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 //import android.support.design.widget.FloatingActionButton;
 
@@ -28,6 +30,10 @@ public class chatMessageActivity extends AppCompatActivity {
     private static final int SIGN_IN_REQUEST_CODE = 1;
     //private FirebaseAuth myAuth;
     private FirebaseListAdapter<Message> adapter;
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = mAuth.getCurrentUser();
+    DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +52,26 @@ public class chatMessageActivity extends AppCompatActivity {
         displayChatMessages();
 
 
-         Button button =  findViewById(R.id.fab);
+
+        Button button =  findViewById(R.id.fab);
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("chatHistory");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText input = (EditText) findViewById(R.id.input);
 
-                FirebaseDatabase.getInstance().getReference().push().setValue(
-                        new Message(input.getText().toString(),
-                                FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
-                );
+                Message message = new Message(input.getText().toString(),
+                        currentUser.getDisplayName());
+                //String messageId = databaseRef.push().getKey();
+                databaseRef.child(currentUser.getUid()).push().setValue(message);
+
+
+                //FirebaseDatabase.getInstance().getReference().push().setValue(
+                //        new Message(input.getText().toString(),
+                //                FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
+                // );
                 // clear input
                 input.setText("");
 
@@ -83,7 +98,7 @@ public class chatMessageActivity extends AppCompatActivity {
     private void displayChatMessages(){
         ListView listMessage = (ListView) findViewById(R.id.list_of_messages);
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.pe_message_list
-                , FirebaseDatabase.getInstance().getReference()) {
+                ,FirebaseDatabase.getInstance().getReference("chatHistory")) {
             @Override
             protected void populateView(View v, Message model, int position) {
                 TextView messageText = v.findViewById(R.id.message_text);
