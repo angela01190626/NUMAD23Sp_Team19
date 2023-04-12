@@ -14,5 +14,12 @@
         android:background="#44ffffff"
         android:textAlignment="center"
         android:textColor="#3A405A"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/delete_plan_item_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:textSize="15sp"/>
 </LinearLayout>

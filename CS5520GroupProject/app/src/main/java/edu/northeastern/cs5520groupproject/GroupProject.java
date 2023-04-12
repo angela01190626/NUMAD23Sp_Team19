@@ -19,6 +19,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.ProfileFragment;
 import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
@@ -61,13 +66,25 @@ public class GroupProject extends AppCompatActivity {
                             .createSignInIntentBuilder()
                             .build());
         } else {
-            Toast.makeText(this,
-                            "Welcome " + FirebaseAuth.getInstance()
-                                    .getCurrentUser()
-                                    .getDisplayName(),
-                            Toast.LENGTH_LONG)
-                    .show();
-            Load();
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("user_final");
+            Map<String, Object> user = new HashMap<>();
+            user.put("uid", uid);
+            user.put("email", email);
+            usersRef.child(uid).setValue(user)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this,
+                                        "Welcome " + FirebaseAuth.getInstance()
+                                                .getCurrentUser()
+                                                .getDisplayName(),
+                                        Toast.LENGTH_LONG)
+                                .show();
+                        Load();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle the error...
+                    });
         }
     }
 
