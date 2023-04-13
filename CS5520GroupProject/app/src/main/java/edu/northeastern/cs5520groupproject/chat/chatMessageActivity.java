@@ -30,6 +30,7 @@ import com.firebase.ui.database.FirebaseListAdapter;
 //import android.support.design.widget.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.northeastern.cs5520groupproject.R;
 
@@ -42,6 +43,7 @@ public class chatMessageActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabaseRef;
     private FirebaseListAdapter<Message> mAdapter;
+    private List<Message> messageList= new ArrayList<>();
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -78,7 +80,7 @@ public class chatMessageActivity extends AppCompatActivity {
                 Message message = new Message(input.getText().toString(),
                         currentUser.getDisplayName());
                 //String messageId = databaseRef.push().getKey();
-                mDatabaseRef.child(currentUser.getUid()).push().setValue(message);
+                mDatabaseRef.child("userId").child(currentUser.getUid()).push().setValue(message);
 
 
                 //FirebaseDatabase.getInstance().getReference().push().setValue(
@@ -115,9 +117,12 @@ public class chatMessageActivity extends AppCompatActivity {
         ListView listMessage = (ListView) findViewById(R.id.list_of_messages);
 
         String userId = currentUser.getUid();
-        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory");
+
+        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory").child("userId");
+
+
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.pe_message_list
-                ,messageRef) {
+                ,messageRef.child(userId)) {
             @Override
             protected void populateView(View v, Message model, int position) {
 
@@ -129,13 +134,15 @@ public class chatMessageActivity extends AppCompatActivity {
                 messageText.setText(model.getMessageTxt());
                 messageUser.setText(model.getUser());
 
-                //messageText.setText(message.getMessageTxt());
-                //messageUser.setText(message.getUser());
 
                 messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getTime()));
-                //messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", message.getTime()));
+
             }
         };
         listMessage.setAdapter(adapter);
     }
+
+
+
+
 }

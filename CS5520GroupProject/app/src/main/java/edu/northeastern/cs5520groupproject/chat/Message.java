@@ -7,13 +7,18 @@ public class Message {
     private String user;
     private long time;
 
-    public Message(){
+    public Message(){}
 
-    }
     public Message(String messageTxt, String user) {
         this.messageTxt = messageTxt;
         this.user = user;
         time  = new Date().getTime();
+    }
+
+    public Message(String messageTxt, String user, long time) {
+        this.messageTxt = messageTxt;
+        this.user = user;
+        this.time = time;
     }
 
     public String getMessageTxt() {
