@@ -2,6 +2,7 @@ package edu.northeastern.cs5520groupproject.chat;
 
 //import static edu.northeastern.cs5520groupproject.GroupProject.SIGN_IN_REQUEST_CODE;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,25 +16,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.database.FirebaseListAdapter;
+//import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 //import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.firebase.ui.database.FirebaseListAdapter;
 //import android.support.design.widget.FloatingActionButton;
+
+import java.util.ArrayList;
 
 import edu.northeastern.cs5520groupproject.R;
 
 public class chatMessageActivity extends AppCompatActivity {
+
+
     private static final int SIGN_IN_REQUEST_CODE = 1;
     //private FirebaseAuth myAuth;
     private FirebaseListAdapter<Message> adapter;
 
+    private DatabaseReference mDatabaseRef;
+    private FirebaseListAdapter<Message> mAdapter;
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
-    DatabaseReference databaseRef;
+    //DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +61,14 @@ public class chatMessageActivity extends AppCompatActivity {
                     .getDisplayName(), Toast.LENGTH_LONG).show();
         }
         // load chat room
+        //getAllMessages();
         displayChatMessages();
 
 
 
         Button button =  findViewById(R.id.fab);
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("chatHistory");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("chatHistory");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +78,7 @@ public class chatMessageActivity extends AppCompatActivity {
                 Message message = new Message(input.getText().toString(),
                         currentUser.getDisplayName());
                 //String messageId = databaseRef.push().getKey();
-                databaseRef.child(currentUser.getUid()).push().setValue(message);
+                mDatabaseRef.child(currentUser.getUid()).push().setValue(message);
 
 
                 //FirebaseDatabase.getInstance().getReference().push().setValue(
@@ -95,12 +108,19 @@ public class chatMessageActivity extends AppCompatActivity {
     }
 
 
+
+
+
     private void displayChatMessages(){
         ListView listMessage = (ListView) findViewById(R.id.list_of_messages);
+
+        String userId = currentUser.getUid();
+        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory");
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.pe_message_list
-                ,FirebaseDatabase.getInstance().getReference("chatHistory")) {
+                ,messageRef) {
             @Override
             protected void populateView(View v, Message model, int position) {
+
                 TextView messageText = v.findViewById(R.id.message_text);
                 TextView messageUser = v.findViewById(R.id.message_user);
                 TextView messageTime = v.findViewById(R.id.message_time);
@@ -109,7 +129,11 @@ public class chatMessageActivity extends AppCompatActivity {
                 messageText.setText(model.getMessageTxt());
                 messageUser.setText(model.getUser());
 
+                //messageText.setText(message.getMessageTxt());
+                //messageUser.setText(message.getUser());
+
                 messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getTime()));
+                //messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", message.getTime()));
             }
         };
         listMessage.setAdapter(adapter);
