@@ -20,7 +20,6 @@ import java.util.List;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
 import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
-import edu.northeastern.cs5520groupproject.login.login_activity;
 
 public class ChatFragment extends Fragment {
 
