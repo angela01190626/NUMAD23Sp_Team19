@@ -68,6 +68,7 @@ public class ProfileFragment extends Fragment {
                 planItems.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     PlanItem planItem = new PlanItem(snapshot.child("item").getValue(String.class));
+                    planItem.setId(snapshot.getKey());
                     planItems.add(planItem);
                 }
                 planAdapter.notifyDataSetChanged();
@@ -96,7 +97,7 @@ public class ProfileFragment extends Fragment {
     private void addPlanToDatabase(String title) {
         String uid = currentUser.getUid();
         String planItemId = databaseRef.push().getKey();
-        PlanItem planItem = new PlanItem(title);
+        PlanItem planItem = new PlanItem(planItemId,title);
         databaseRef.child(uid).child(planItemId).setValue(planItem);
     }
 }
