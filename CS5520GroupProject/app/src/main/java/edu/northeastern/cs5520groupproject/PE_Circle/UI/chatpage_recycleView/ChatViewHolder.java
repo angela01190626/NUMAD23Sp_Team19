@@ -12,19 +12,19 @@ import edu.northeastern.cs5520groupproject.R;
 public class ChatViewHolder extends RecyclerView.ViewHolder {
 
     TextView friendName;
-    TextView lastMessage;
+    TextView friendEmail;
     ImageView sticker;
 
     public ChatViewHolder(@NonNull View itemView) {
         super(itemView);
         this.friendName = itemView.findViewById(R.id.chat_personName);
-        this.lastMessage = itemView.findViewById(R.id.chat_lastMessage);
+        this.friendEmail = itemView.findViewById(R.id.chat_email);
         this.sticker = itemView.findViewById(R.id.chat_avatar);
     }
 
     public void bindThisData(Chat chat) {
-        friendName.setText(chat.friend);
-        lastMessage.setText(chat.lastMessage);
+        friendName.setText(chat.name);
+        friendEmail.setText(chat.email);
         sticker.setImageResource(R.drawable.cat1);
     }
 }

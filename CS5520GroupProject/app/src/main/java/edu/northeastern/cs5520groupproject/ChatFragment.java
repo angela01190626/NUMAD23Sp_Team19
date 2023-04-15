@@ -1,5 +1,6 @@
 package edu.northeastern.cs5520groupproject;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -13,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +37,12 @@ public class ChatFragment extends Fragment {
     private FirebaseAuth myAuth;
     private Button chat;
 
+    // find all user for friend
+    private DatabaseReference databaseReference;
+
+
+
+
     @SuppressLint("MissingInflatedId")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,8 +60,50 @@ public class ChatFragment extends Fragment {
 
         // 检查目前注册的用户 或者说 我自己的好朋友
 
+        // databaseReference
+        databaseReference = FirebaseDatabase.getInstance().getReference("user_final");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                chatList.clear();
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    Chat chat = userSnapshot.getValue(Chat.class);
+                    //String email = chat.getEmail();
+                    //String name = chat.getName();
+                    //String uid = chat.getUid();
+                    //Chat newChat = new Chat(email,name,uid);
+                    chatList.add(chat);
+                }
 
-        chatList.add(new Chat("Tom", "great", R.drawable.cat1));
+                // 在这里处理和显示用户列表
+                chatAdapter = new ChatAdapter(chatList);
+                recyclerView.setAdapter(chatAdapter);
+                // Inflate the layout for this fragment
+
+                chat = (Button) v.findViewById(R.id.chat_btn);
+
+                chat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), chatMessageActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 错误处理
+            }
+        });
+
+
+
+
+      /*  //chatList.add(new Chat("13913001866@163.com", "Tom", R.drawable.cat1));
         chatAdapter = new ChatAdapter(chatList);
         recyclerView.setAdapter(chatAdapter);
         // Inflate the layout for this fragment
@@ -63,7 +117,7 @@ public class ChatFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+*/
 
         return v;
     }

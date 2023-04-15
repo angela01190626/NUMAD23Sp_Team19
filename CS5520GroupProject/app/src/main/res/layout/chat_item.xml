@@ -8,17 +8,28 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="79dp">
+        android:layout_height="98dp">
+
+        <TextView
+            android:id="@+id/chat_email"
+            android:layout_width="153dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="16dp"
+            android:text="Email:"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.395"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/chat_personName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="276dp"
-            android:text="Tom"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="268dp"
+            android:text="Name:"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/chat_email" />
 
         <TextView
             android:id="@+id/chat_lastMessage"
@@ -28,10 +39,10 @@
             android:text="Wow."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.102"
+            app:layout_constraintHorizontal_bias="0.067"
             app:layout_constraintStart_toEndOf="@+id/chat_avatar"
             app:layout_constraintTop_toBottomOf="@+id/chat_personName"
-            app:layout_constraintVertical_bias="0.058" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/chat_avatar"
@@ -40,7 +51,7 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/chat_personName"
-            app:layout_constraintHorizontal_bias="0.307"
+            app:layout_constraintHorizontal_bias="0.571"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
