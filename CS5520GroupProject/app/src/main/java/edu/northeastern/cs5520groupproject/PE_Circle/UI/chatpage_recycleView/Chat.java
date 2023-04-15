@@ -6,6 +6,7 @@ public class Chat {
 
     public String name;
 
+    public String lastMessage;
     public String uid;
 
     private int stickerId;
@@ -14,10 +15,11 @@ public class Chat {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Chat(String email, String name, String uid) {
+    public Chat(String email, String name, String uid, String lastMessage) {
         this.email = email;
         this.name = name;
         this.uid = uid;
+        this.lastMessage = lastMessage;
     }
 
     public Chat(String email, String name, String uid, int stickerId) {

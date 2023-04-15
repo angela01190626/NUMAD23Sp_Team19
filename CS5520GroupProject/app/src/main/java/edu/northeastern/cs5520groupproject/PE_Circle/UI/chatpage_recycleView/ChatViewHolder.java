@@ -25,6 +25,6 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
     public void bindThisData(Chat chat) {
         friendName.setText(chat.name);
         friendEmail.setText(chat.email);
-        sticker.setImageResource(R.drawable.cat1);
+        sticker.setImageResource(R.drawable.baseline_account_circle_24);
     }
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -76,10 +78,11 @@ public class GroupProject extends AppCompatActivity {
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
-            signInLauncher.launch(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .build());
+//            signInLauncher.launch(
+//                    AuthUI.getInstance()
+//                            .createSignInIntentBuilder()
+//                            .build());
+            Load();
         } else {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -107,34 +110,40 @@ public class GroupProject extends AppCompatActivity {
 
     private void Load(){
         bottomNavigationView  = findViewById(R.id.nav_view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                // 根据所选菜单项ID执行相应操作
+                    // 根据所选菜单项ID执行相应操作
                 switch (item.getItemId()) {
                     case R.id.navigation_me:
-                        loadFragment(new ProfileFragment());
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            loadFragment(new ProfileFragment());
+                        } else {
+                            signInLauncher.launch(
+                                    AuthUI.getInstance()
+                                            .createSignInIntentBuilder()
+                                            .build());
+                        }
                         return true;
-
                     case R.id.navigation_home:
-
                         loadFragment(new HomeFragment());
                         return true;
                     case R.id.navigation_message:
-                        loadFragment(new ChatFragment());
-                        //Intent intent = new Intent(this, chatMessageActivity.class);
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            loadFragment(new ChatFragment());
+                        } else {
+                            signInLauncher.launch(
+                                    AuthUI.getInstance()
+                                            .createSignInIntentBuilder()
+                                            .build());
+                        }
                         return true;
-//
                     case R.id.navigation_post:
                         // 在这里处理发布图标点击
                         loadFragment(new PostFragment());
                         return true;
-//
-//                case R.id.profile:
-//                    // 在这里处理个人信息图标点击
-//                    loadFragment(new ProfileFragment());
-//                    return true;
                 }
                 return false;
             }
