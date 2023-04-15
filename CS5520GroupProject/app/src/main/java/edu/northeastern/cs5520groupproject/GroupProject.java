@@ -47,10 +47,12 @@ public class GroupProject extends AppCompatActivity {
 
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                        String name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
                         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("user_final");
                         Map<String, Object> user = new HashMap<>();
                         user.put("uid", uid);
                         user.put("email", email);
+                        user.put("name", name);
                         usersRef.child(uid).setValue(user)
                                 .addOnSuccessListener(aVoid -> {
                                     Toast.makeText(this,
@@ -81,10 +83,12 @@ public class GroupProject extends AppCompatActivity {
         } else {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            String name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
             DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("user_final");
             Map<String, Object> user = new HashMap<>();
             user.put("uid", uid);
             user.put("email", email);
+            user.put("name", name);
             usersRef.child(uid).setValue(user)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this,
