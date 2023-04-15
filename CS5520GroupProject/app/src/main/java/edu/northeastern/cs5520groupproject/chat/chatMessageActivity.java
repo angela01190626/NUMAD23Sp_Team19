@@ -82,7 +82,6 @@ public class chatMessageActivity extends AppCompatActivity {
                 //String messageId = databaseRef.push().getKey();
                 mDatabaseRef.child("userId").child(currentUser.getUid()).push().setValue(message);
 
-
                 //FirebaseDatabase.getInstance().getReference().push().setValue(
                 //        new Message(input.getText().toString(),
                 //                FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
@@ -133,7 +132,6 @@ public class chatMessageActivity extends AppCompatActivity {
                 // set text
                 messageText.setText(model.getMessageTxt());
                 messageUser.setText(model.getUser());
-
 
                 messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getTime()));
 

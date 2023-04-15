@@ -40,19 +40,11 @@ public class ChatFragment extends Fragment {
     // find all user for friend
     private DatabaseReference databaseReference;
 
-
-
-
     @SuppressLint("MissingInflatedId")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        //Intent intent = new Intent(getActivity(), chatMessageActivity.class);
-        //startActivity(intent);
-
-
-       View v = inflater.inflate(R.layout.activity_chat_fragment, container, false);
+        View v = inflater.inflate(R.layout.activity_chat_fragment, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.chat_recycle_view);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -80,15 +72,15 @@ public class ChatFragment extends Fragment {
                 recyclerView.setAdapter(chatAdapter);
                 // Inflate the layout for this fragment
 
-                chat = (Button) v.findViewById(R.id.chat_btn);
-
-                chat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(), chatMessageActivity.class);
-                        startActivity(intent);
-                    }
-                });
+                //                chat = (Button) v.findViewById(R.id.chat_btn);
+                //
+                //                chat.setOnClickListener(new View.OnClickListener() {
+                //                    @Override
+                //                    public void onClick(View view) {
+                //                        Intent intent = new Intent(getActivity(), chatMessageActivity.class);
+                //                        startActivity(intent);
+                //                    }
+                //                });
 
 
 
