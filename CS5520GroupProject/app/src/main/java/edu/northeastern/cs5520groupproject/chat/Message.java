@@ -11,10 +11,9 @@ public class Message {
 
     public Message(){}
 
-    public Message(String messageTxt, String user, String receiver) {
+    public Message(String messageTxt, String user) {
         this.messageTxt = messageTxt;
         this.user = user;
-        this.receiver = receiver;
         time  = new Date().getTime();
     }
 

@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.firebase.ui.database.FirebaseListAdapter;
 //import android.support.design.widget.FloatingActionButton;
@@ -32,6 +33,8 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
 import edu.northeastern.cs5520groupproject.R;
 
 public class chatMessageActivity extends AppCompatActivity {
@@ -49,6 +52,7 @@ public class chatMessageActivity extends AppCompatActivity {
     FirebaseUser currentUser = mAuth.getCurrentUser();
 
     private String receiverId;
+    private String receiver;
     //DatabaseReference databaseRef;
 
     @Override
@@ -56,6 +60,7 @@ public class chatMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_message);
 
+        receiver = getIntent().getStringExtra("receiver");
         receiverId = getIntent().getStringExtra("receiverId");
         // check if user is login
 
@@ -78,26 +83,27 @@ public class chatMessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText input = (EditText) findViewById(R.id.input);
 
-                String messageContent = input.getText().toString();
-                String senderName = currentUser.getDisplayName();
+                Message message = new Message(input.getText().toString(), currentUser.getDisplayName() + "-" + receiver);
+                String messageId = mDatabaseRef.child("userId")
+                        .child(currentUser.getUid()).push().getKey();
+                mDatabaseRef.child("userId").child(currentUser.getUid())
+                        .child(messageId).setValue(message);
+                mDatabaseRef.child("userId").child(currentUser.getUid()).child(messageId)
+                        .child("receiver").setValue(receiver);
 
-                Message message = new Message(messageContent, senderName, receiverId);
-                String messageId = mDatabaseRef.child("userId").child(currentUser.getUid()).push().getKey();
-                mDatabaseRef.child("userId").child(currentUser.getUid()).child(messageId).setValue(message);
+                Message receiverMessage = new Message(input.getText().toString(), receiver + "-" + currentUser.getDisplayName());
+                String receiverMessageId = mDatabaseRef.child("userId")
+                        .child(receiverId).push().getKey();
+                mDatabaseRef.child("userId").child(receiverId)
+                        .child(receiverMessageId).setValue(receiverMessage);
+                mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
+                        .child("sender").setValue(currentUser.getDisplayName());
 
-                //FirebaseDatabase.getInstance().getReference().push().setValue(
-                //        new Message(input.getText().toString(),
-                //                FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
-                // );
-                // clear input
                 input.setText("");
 
             }
         });
-
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,15 +118,11 @@ public class chatMessageActivity extends AppCompatActivity {
     }
 
 
-
-
-
     private void displayChatMessages(String receiverId){
         ListView listMessage = (ListView) findViewById(R.id.list_of_messages);
 
         String userId = currentUser.getUid();
         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory").child("userId");
-
 
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.pe_message_list
                 ,messageRef.child(userId)) {
@@ -132,10 +134,12 @@ public class chatMessageActivity extends AppCompatActivity {
                 TextView messageTime = v.findViewById(R.id.message_time);
 
                 // set text
-                messageText.setText(model.getMessageTxt());
-                messageUser.setText(model.getUser());
 
-                messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
+                if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)) {
+                    messageText.setText(model.getMessageTxt());
+                    messageUser.setText(model.getUser().split("-")[0]);
+                    messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
+                }
 
             }
         };
