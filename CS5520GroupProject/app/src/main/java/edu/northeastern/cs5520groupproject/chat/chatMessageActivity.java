@@ -138,12 +138,8 @@ public class chatMessageActivity extends AppCompatActivity {
                 if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)
                         || model.getUser().equals(receiver + "-" + currentUser.getDisplayName())) {
                     messageText.setText(model.getMessageTxt());
-                    if (model.getUser().split("-")[0].equals(currentUser.getDisplayName())) {
-                        messageUser.setText(model.getUser().split("-")[0]);
-                    }
-                    else {
-                        messageUser.setText(model.getUser().split("-")[1]);
-                    }
+
+                    messageUser.setText(model.getUser().split("-")[0]);
                     messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
                 }
 
