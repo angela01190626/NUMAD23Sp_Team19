@@ -70,20 +70,6 @@ public class ChatFragment extends Fragment {
                 // 在这里处理和显示用户列表
                 chatAdapter = new ChatAdapter(chatList);
                 recyclerView.setAdapter(chatAdapter);
-                // Inflate the layout for this fragment
-
-                //                chat = (Button) v.findViewById(R.id.chat_btn);
-                //
-                //                chat.setOnClickListener(new View.OnClickListener() {
-                //                    @Override
-                //                    public void onClick(View view) {
-                //                        Intent intent = new Intent(getActivity(), chatMessageActivity.class);
-                //                        startActivity(intent);
-                //                    }
-                //                });
-
-
-
             }
 
             @Override
@@ -92,28 +78,6 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
-
-
-      /*  //chatList.add(new Chat("13913001866@163.com", "Tom", R.drawable.cat1));
-        chatAdapter = new ChatAdapter(chatList);
-        recyclerView.setAdapter(chatAdapter);
-        // Inflate the layout for this fragment
-
-        chat = (Button) v.findViewById(R.id.chat_btn);
-
-        chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), chatMessageActivity.class);
-                startActivity(intent);
-            }
-        });
-*/
-
         return v;
     }
-
-
-
 }

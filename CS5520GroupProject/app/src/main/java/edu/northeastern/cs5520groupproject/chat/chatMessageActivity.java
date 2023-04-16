@@ -47,6 +47,8 @@ public class chatMessageActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
+
+    private String receiverId;
     //DatabaseReference databaseRef;
 
     @Override
@@ -54,6 +56,7 @@ public class chatMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_message);
 
+        receiverId = getIntent().getStringExtra("receiverId");
         // check if user is login
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -64,9 +67,7 @@ public class chatMessageActivity extends AppCompatActivity {
         }
         // load chat room
         //getAllMessages();
-        displayChatMessages();
-
-
+        displayChatMessages(receiverId);
 
         Button button =  findViewById(R.id.fab);
 
@@ -77,10 +78,12 @@ public class chatMessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText input = (EditText) findViewById(R.id.input);
 
-                Message message = new Message(input.getText().toString(),
-                        currentUser.getDisplayName());
-                //String messageId = databaseRef.push().getKey();
-                mDatabaseRef.child("userId").child(currentUser.getUid()).push().setValue(message);
+                String messageContent = input.getText().toString();
+                String senderName = currentUser.getDisplayName();
+
+                Message message = new Message(messageContent, senderName, receiverId);
+                String messageId = mDatabaseRef.child("userId").child(currentUser.getUid()).push().getKey();
+                mDatabaseRef.child("userId").child(currentUser.getUid()).child(messageId).setValue(message);
 
                 //FirebaseDatabase.getInstance().getReference().push().setValue(
                 //        new Message(input.getText().toString(),
@@ -101,7 +104,7 @@ public class chatMessageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == SIGN_IN_REQUEST_CODE) {
             Toast.makeText(this, "Successfully signed in!", Toast.LENGTH_SHORT).show();
-            displayChatMessages();
+            displayChatMessages(receiverId);
         }else{
             Toast.makeText(this, "Can not sign in. Please try again", Toast.LENGTH_SHORT).show();
             finish();
@@ -112,11 +115,10 @@ public class chatMessageActivity extends AppCompatActivity {
 
 
 
-    private void displayChatMessages(){
+    private void displayChatMessages(String receiverId){
         ListView listMessage = (ListView) findViewById(R.id.list_of_messages);
 
         String userId = currentUser.getUid();
-
         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory").child("userId");
 
 
@@ -133,7 +135,7 @@ public class chatMessageActivity extends AppCompatActivity {
                 messageText.setText(model.getMessageTxt());
                 messageUser.setText(model.getUser());
 
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getTime()));
+                messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
 
             }
         };
