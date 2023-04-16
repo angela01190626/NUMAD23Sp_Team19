@@ -43,7 +43,7 @@ public class Message {
         this.user = receiver;
     }
 
-    public String getReceiver(String receiver) {
+    public String getReceiver() {
         return receiver;
     }
 

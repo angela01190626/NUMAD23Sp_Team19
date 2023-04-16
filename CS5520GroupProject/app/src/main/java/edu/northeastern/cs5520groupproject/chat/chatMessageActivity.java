@@ -91,7 +91,7 @@ public class chatMessageActivity extends AppCompatActivity {
                 mDatabaseRef.child("userId").child(currentUser.getUid()).child(messageId)
                         .child("receiver").setValue(receiver);
 
-                Message receiverMessage = new Message(input.getText().toString(), receiver + "-" + currentUser.getDisplayName());
+                Message receiverMessage = new Message(input.getText().toString(), currentUser.getDisplayName() + "-" + receiver);
                 String receiverMessageId = mDatabaseRef.child("userId")
                         .child(receiverId).push().getKey();
                 mDatabaseRef.child("userId").child(receiverId)
@@ -135,9 +135,15 @@ public class chatMessageActivity extends AppCompatActivity {
 
                 // set text
 
-                if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)) {
+                if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)
+                        || model.getUser().equals(receiver + "-" + currentUser.getDisplayName())) {
                     messageText.setText(model.getMessageTxt());
-                    messageUser.setText(model.getUser().split("-")[0]);
+                    if (model.getUser().split("-")[0].equals(currentUser.getDisplayName())) {
+                        messageUser.setText(model.getUser().split("-")[0]);
+                    }
+                    else {
+                        messageUser.setText(model.getUser().split("-")[1]);
+                    }
                     messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
                 }
 
