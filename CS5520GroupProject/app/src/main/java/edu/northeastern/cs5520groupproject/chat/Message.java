@@ -7,6 +7,8 @@ public class Message {
     private String user;
     private long time;
 
+    private String receiver;
+
     public Message(){}
 
     public Message(String messageTxt, String user) {
@@ -35,6 +37,14 @@ public class Message {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public void setReceiver(String receiver) {
+        this.user = receiver;
+    }
+
+    public String getReceiver() {
+        return receiver;
     }
 
     public long getTime() {

@@ -38,7 +38,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder> {
         holder.itemView.setOnClickListener(view -> {
             row_index = position;
             // 调用chatMessage活动
+            Chat selectedChat = chatList.get(position);
+            String receiver = selectedChat.getName();
+            String receiverId = selectedChat.getUid();
             Intent chatIntent = new Intent(view.getContext(), chatMessageActivity.class);
+            chatIntent.putExtra("receiver", receiver);
+            chatIntent.putExtra("receiverId", receiverId);
             view.getContext().startActivity(chatIntent);
         });
     }

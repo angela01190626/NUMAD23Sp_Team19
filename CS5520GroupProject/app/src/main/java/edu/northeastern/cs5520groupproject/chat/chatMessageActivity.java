@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.firebase.ui.database.FirebaseListAdapter;
 //import android.support.design.widget.FloatingActionButton;
@@ -32,6 +33,8 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
 import edu.northeastern.cs5520groupproject.R;
 
 public class chatMessageActivity extends AppCompatActivity {
@@ -47,6 +50,9 @@ public class chatMessageActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
+
+    private String receiverId;
+    private String receiver;
     //DatabaseReference databaseRef;
 
     @Override
@@ -54,6 +60,8 @@ public class chatMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_message);
 
+        receiver = getIntent().getStringExtra("receiver");
+        receiverId = getIntent().getStringExtra("receiverId");
         // check if user is login
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -64,9 +72,7 @@ public class chatMessageActivity extends AppCompatActivity {
         }
         // load chat room
         //getAllMessages();
-        displayChatMessages();
-
-
+        displayChatMessages(receiverId);
 
         Button button =  findViewById(R.id.fab);
 
@@ -77,31 +83,34 @@ public class chatMessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText input = (EditText) findViewById(R.id.input);
 
-                Message message = new Message(input.getText().toString(),
-                        currentUser.getDisplayName());
-                //String messageId = databaseRef.push().getKey();
-                mDatabaseRef.child("userId").child(currentUser.getUid()).push().setValue(message);
+                Message message = new Message(input.getText().toString(), currentUser.getDisplayName() + "-" + receiver);
+                String messageId = mDatabaseRef.child("userId")
+                        .child(currentUser.getUid()).push().getKey();
+                mDatabaseRef.child("userId").child(currentUser.getUid())
+                        .child(messageId).setValue(message);
+                mDatabaseRef.child("userId").child(currentUser.getUid()).child(messageId)
+                        .child("receiver").setValue(receiver);
 
-                //FirebaseDatabase.getInstance().getReference().push().setValue(
-                //        new Message(input.getText().toString(),
-                //                FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
-                // );
-                // clear input
+                Message receiverMessage = new Message(input.getText().toString(), currentUser.getDisplayName() + "-" + receiver);
+                String receiverMessageId = mDatabaseRef.child("userId")
+                        .child(receiverId).push().getKey();
+                mDatabaseRef.child("userId").child(receiverId)
+                        .child(receiverMessageId).setValue(receiverMessage);
+                mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
+                        .child("sender").setValue(currentUser.getDisplayName());
+
                 input.setText("");
 
             }
         });
-
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == SIGN_IN_REQUEST_CODE) {
             Toast.makeText(this, "Successfully signed in!", Toast.LENGTH_SHORT).show();
-            displayChatMessages();
+            displayChatMessages(receiverId);
         }else{
             Toast.makeText(this, "Can not sign in. Please try again", Toast.LENGTH_SHORT).show();
             finish();
@@ -109,16 +118,11 @@ public class chatMessageActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    private void displayChatMessages(){
+    private void displayChatMessages(String receiverId){
         ListView listMessage = (ListView) findViewById(R.id.list_of_messages);
 
         String userId = currentUser.getUid();
-
         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory").child("userId");
-
 
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.pe_message_list
                 ,messageRef.child(userId)) {
@@ -130,10 +134,14 @@ public class chatMessageActivity extends AppCompatActivity {
                 TextView messageTime = v.findViewById(R.id.message_time);
 
                 // set text
-                messageText.setText(model.getMessageTxt());
-                messageUser.setText(model.getUser());
 
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getTime()));
+                if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)
+                        || model.getUser().equals(receiver + "-" + currentUser.getDisplayName())) {
+                    messageText.setText(model.getMessageTxt());
+
+                    messageUser.setText(model.getUser().split("-")[0]);
+                    messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
+                }
 
             }
         };
