@@ -16,7 +16,8 @@ import edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView.Spa
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ImageAdapter imageAdapter = new ImageAdapter(new int[]{R.drawable.sample1, R.drawable.sample2,
-            R.drawable.sample3,R.drawable.sample4,R.drawable.sample5,R.drawable.sample6,R.drawable.sample7});
+            R.drawable.sample3,R.drawable.sample4,R.drawable.sample5,R.drawable.sample6,R.drawable.sample7}
+            ,new String[]{"Jacky","Alice","Joy","Nancy","Alex","Jojo","Fan"});
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(imageAdapter);
+        //layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 //
         int space = getResources().getDimensionPixelSize(R.dimen.item_space); // 从资源文件中获取间距大小
         recyclerView.addItemDecoration(new SpaceItemDecoration(space));
