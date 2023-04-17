@@ -1,37 +1,35 @@
 package edu.northeastern.cs5520groupproject.post;
 
 public class Post {
-
     private String postid;
-    private String postimage;
+    private String imageUrl; // Changed from postImage
     private String description;
     private String publisher;
 
     public Post() {
-
     }
 
-    public Post(String postid, String postimage, String description, String publisher) {
+    public Post(String postid, String imageUrl, String description, String publisher) {
         this.postid = postid;
-        this.postimage = postimage;
+        this.imageUrl = imageUrl; // Changed from postImage
         this.description = description;
         this.publisher = publisher;
     }
 
-    public String getPostid() {
+    public String getPostId() {
         return postid;
     }
 
-    public void setPostid(String postid) {
+    public void setPostId(String postid) {
         this.postid = postid;
     }
 
-    public String getPostImage() {
-        return postimage;
+    public String getImageUrl() { // Changed from getPostImage()
+        return imageUrl;
     }
 
-    public void setPostimage(String postimage) {
-        this.postimage = postimage;
+    public void setImageUrl(String imageUrl) { // Changed from setPostImage()
+        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {

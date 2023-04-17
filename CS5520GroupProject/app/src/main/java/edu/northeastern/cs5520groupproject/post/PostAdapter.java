@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -29,16 +30,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
         return new PostViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         final Post post = postList.get(position);
-
-        //Picasso.get().load(post.getPostImage()).placeholder(R.drawable.test8).into(holder.post_image);
-        holder.post_image.setImageResource(R.drawable.test8);
+        Glide.with(holder.itemView.getContext())
+                .load(post.getImageUrl())
+                .placeholder(R.drawable.baseline_cloud_upload_24)
+                .into(holder.post_image);
         holder.description.setVisibility(View.VISIBLE);
         holder.description.setText("Hello World");
 
