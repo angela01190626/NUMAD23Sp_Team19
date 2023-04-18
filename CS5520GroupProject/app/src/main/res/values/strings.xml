@@ -8,4 +8,6 @@
     <string name="title_message">Message</string>
     <string name="title_post">Post</string>
     <string name="title_me">Me</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

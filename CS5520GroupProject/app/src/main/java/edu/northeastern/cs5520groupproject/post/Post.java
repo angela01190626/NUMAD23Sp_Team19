@@ -1,34 +1,36 @@
 package edu.northeastern.cs5520groupproject.post;
 
 public class Post {
-    private String postid;
-    private String imageUrl; // Changed from postImage
+    private String postId;
+    private String imageUrl;
     private String description;
-    private String publisher;
+    private String publisherUid;
+    private int likesCount;
 
     public Post() {
+
     }
 
-    public Post(String postid, String imageUrl, String description, String publisher) {
-        this.postid = postid;
-        this.imageUrl = imageUrl; // Changed from postImage
+    public Post(String postId, String imageUrl, String description, String publisherUid) {
+        this.postId = postId;
+        this.imageUrl = imageUrl;
         this.description = description;
-        this.publisher = publisher;
+        this.publisherUid = publisherUid;
     }
 
     public String getPostId() {
-        return postid;
+        return postId;
     }
 
     public void setPostId(String postid) {
-        this.postid = postid;
+        this.postId = postid;
     }
 
-    public String getImageUrl() { // Changed from getPostImage()
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) { // Changed from setPostImage()
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -40,11 +42,19 @@ public class Post {
         this.description = description;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public String getPublisherUid() {
+        return publisherUid;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setPublisherUid(String publisherUid) {
+        this.publisherUid = publisherUid;
+    }
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
     }
 }

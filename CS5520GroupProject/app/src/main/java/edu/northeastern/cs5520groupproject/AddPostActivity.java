@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,6 +39,10 @@ import java.util.Map;
 
 public class AddPostActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_IMAGE_PICK = 1000;
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    FirebaseUser currentUser = mAuth.getCurrentUser();
 
     private ImageView imageView;
     private EditText editTextDescription;
@@ -131,6 +137,7 @@ public class AddPostActivity extends AppCompatActivity {
                     post.put("postId", postId);
                     post.put("imageUrl", downloadUri.toString());
                     post.put("description", editTextDescription.getText().toString().trim());
+                    post.put("publisherUid", currentUser.getUid()); // Changed from publisher to publisherUid
 
                     databaseReference.child(postId).setValue(post);
                     Toast.makeText(AddPostActivity.this, "Post uploaded successfully", Toast.LENGTH_SHORT).show();
@@ -140,16 +147,6 @@ public class AddPostActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private String getFileExtension(Uri uri) {
-        String extension = "";
-        if (uri.getScheme().equals("content")) {
-            extension = getContentResolver().getType(uri).split("/")[1];
-        } else {
-            extension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
-        }
-        return extension;
     }
 
 }
