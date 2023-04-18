@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_more"
-        android:id="@+id/more"
+        android:src="@drawable/ic_inbox"
+        android:id="@+id/share"
         android:layout_margin="15dp"/>
 
     <LinearLayout
@@ -23,11 +23,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <TextView
+                android:id="@+id/image_profile"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="10dp"
-                android:id="@+id/image_profile"/>
+                android:background="@drawable/profile_name_background"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -73,13 +79,6 @@
                 android:src="@drawable/ic_comment"
                 android:layout_toEndOf="@id/like"
                 android:layout_marginStart="10dp"/>
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/save"
-                android:src="@drawable/ic_saver_black"/>
 
         </RelativeLayout>
 
