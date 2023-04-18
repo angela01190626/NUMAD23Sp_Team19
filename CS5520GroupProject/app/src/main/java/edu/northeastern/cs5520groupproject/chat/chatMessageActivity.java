@@ -109,30 +109,30 @@ public class chatMessageActivity extends AppCompatActivity {
                 mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
                         .child("sender").setValue(currentUser.getDisplayName());
 
-                final String[] token = new String[1];
-                FirebaseMessaging.getInstance().getToken()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-                                if (!task.isSuccessful()) {
-                                    System.out.println("Fetching FCM registration token failed" + task.getException());
-                                    return;
-                                }
-
-                                // Get new FCM registration token
-                                token[0] = task.getResult();
-                                System.out.println(token[0]);
-                                // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(token[0])
-                        .setMessageId(String.valueOf(messageId))
-                        .addData("title", "New message")
-                        .addData("body", input.getText().toString())
-                        .build());
-
-                showNotification("New message", input.getText().toString());
+    //                final String[] token = new String[1];
+    //                FirebaseMessaging.getInstance().getToken()
+    //                        .addOnCompleteListener(new OnCompleteListener<String>() {
+    //                            @Override
+    //                            public void onComplete(@NonNull Task<String> task) {
+    //                                if (!task.isSuccessful()) {
+    //                                    System.out.println("Fetching FCM registration token failed" + task.getException());
+    //                                    return;
+    //                                }
+    //
+    //                                // Get new FCM registration token
+    //                                token[0] = task.getResult();
+    //                                System.out.println(token[0]);
+    //                                // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+    //                            }
+    //                        });
+    //
+    //                FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(token[0])
+    //                        .setMessageId(String.valueOf(messageId))
+    //                        .addData("title", "New message")
+    //                        .addData("body", input.getText().toString())
+    //                        .build());
+    //
+    //                showNotification("New message", input.getText().toString());
                 input.setText("");
 
             }
