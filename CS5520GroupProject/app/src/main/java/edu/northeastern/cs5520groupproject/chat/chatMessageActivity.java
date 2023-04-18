@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +42,9 @@ import com.google.firebase.messaging.RemoteMessage;
 //import android.support.design.widget.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
@@ -194,6 +197,21 @@ public class chatMessageActivity extends AppCompatActivity {
 
                     messageUser.setText(model.getUser().split("-")[0]);
                     messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_final").child(receiverId);
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                new Notification(model.getMessageTxt(), "New message from: " + model.getUser().split("-")[0], receiverId, "", "");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+
+                    });
                 }
 
             }
