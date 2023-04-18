@@ -4,8 +4,13 @@ package edu.northeastern.cs5520groupproject.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -17,6 +22,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 //import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 //import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +35,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 //import android.support.design.widget.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -99,11 +109,54 @@ public class chatMessageActivity extends AppCompatActivity {
                 mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
                         .child("sender").setValue(currentUser.getDisplayName());
 
+                final String[] token = new String[1];
+                FirebaseMessaging.getInstance().getToken()
+                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                if (!task.isSuccessful()) {
+                                    System.out.println("Fetching FCM registration token failed" + task.getException());
+                                    return;
+                                }
+
+                                // Get new FCM registration token
+                                token[0] = task.getResult();
+                                System.out.println(token[0]);
+                                // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(token[0])
+                        .setMessageId(String.valueOf(messageId))
+                        .addData("title", "New message")
+                        .addData("body", input.getText().toString())
+                        .build());
+
+                showNotification("New message", input.getText().toString());
                 input.setText("");
 
             }
         });
     }
+
+    private void showNotification(String title, String message) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String channelId = "My Notification Channel";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, "Channel Name", NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel.setDescription("Channel description");
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        notificationManager.notify(1, notificationBuilder.build());
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
