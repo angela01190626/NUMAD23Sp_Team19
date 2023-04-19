@@ -1,16 +1,27 @@
 package edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView;
 
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.PlanItem;
 import edu.northeastern.cs5520groupproject.R;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -54,6 +65,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.courseDuration.setText(course.getTimeDuration());
         holder.calorieCount.setText(course.getCalorieCount());
         holder.level.setText(course.getLevel());
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("plan");
+                String courseName=course.getCourseName();
+                String planItemId = databaseRef.push().getKey();
+                PlanItem planItem = new PlanItem(planItemId,courseName);
+
+                databaseRef.child(uid).child(planItemId).setValue(planItem);
+                Toast.makeText(v.getContext(), "Successfully added to your plan",
+                                Toast.LENGTH_LONG)
+                        .show();
+
+                notifyDataSetChanged();
+
+
+            }
+        });
     }
 
     @Override
