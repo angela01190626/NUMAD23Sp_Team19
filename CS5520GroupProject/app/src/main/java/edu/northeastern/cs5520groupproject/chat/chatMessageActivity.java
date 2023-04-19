@@ -65,6 +65,7 @@ public class chatMessageActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
 
+    private String notification;
     private String receiverId;
     private String receiver;
     //DatabaseReference databaseRef;
@@ -201,8 +202,13 @@ public class chatMessageActivity extends AppCompatActivity {
                     reference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){
-                                new Notification(model.getMessageTxt(), "New message from: " + model.getUser().split("-")[0], receiverId, "", "");
+                            if(dataSnapshot.exists()) {
+                                if (dataSnapshot.child("notificationKey").exists()) {
+                                    notification = dataSnapshot.child("notificationKey").getValue().toString();
+                                } else {
+                                    notification = "";
+                                }
+                                new Notification(model.getMessageTxt(), "New message from: " + model.getUser().split("-")[0], notification, "", "");
                             }
                         }
                         @Override
