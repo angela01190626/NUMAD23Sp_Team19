@@ -4,10 +4,16 @@ package edu.northeastern.cs5520groupproject.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +23,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 //import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 //import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +36,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+import com.onesignal.OneSignal;
 //import android.support.design.widget.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
@@ -51,6 +65,7 @@ public class chatMessageActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
 
+    private String notification;
     private String receiverId;
     private String receiver;
     //DatabaseReference databaseRef;
@@ -99,11 +114,32 @@ public class chatMessageActivity extends AppCompatActivity {
                 mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
                         .child("sender").setValue(currentUser.getDisplayName());
 
-                input.setText("");
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_final").child(receiverId);
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            if (dataSnapshot.child("notificationKey").exists()) {
+                                notification = dataSnapshot.child("notificationKey").getValue().toString();
+                            } else {
+                                notification = "";
+                            }
+                            new NotificationGroupProject(input.getText().toString(), "New message from: "
+                                    + currentUser.getDisplayName(), notification, "", "");
+                            input.setText("");
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+                });
 
             }
         });
     }
+    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -134,7 +170,6 @@ public class chatMessageActivity extends AppCompatActivity {
                 TextView messageTime = v.findViewById(R.id.message_time);
 
                 // set text
-
                 if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)
                         || model.getUser().equals(receiver + "-" + currentUser.getDisplayName())) {
                     messageText.setText(model.getMessageTxt());
