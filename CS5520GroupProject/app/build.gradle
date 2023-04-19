@@ -86,4 +86,10 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
+//Scalable density pixels that is it will have equal layouts in all phone screens
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+//Permissions request using dexter
+    implementation 'com.karumi:dexter:6.2.3'
+//Glide dependency
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
 }

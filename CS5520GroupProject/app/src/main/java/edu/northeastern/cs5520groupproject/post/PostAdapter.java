@@ -1,9 +1,12 @@
 package edu.northeastern.cs5520groupproject.post;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +37,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -60,6 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return new PostViewHolder(view);
     }
 
+    @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         final Post post = postList.get(position);
@@ -70,13 +77,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.description.setVisibility(View.VISIBLE);
         holder.description.setText(post.getDescription());
 
-        // Set the user's display name in the profile photo ImageView
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            String displayName = firebaseUser.getDisplayName();
-            holder.username.setText(displayName);
-            holder.image_profile.setText(displayName);
-        }
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("user_final");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String userName = dataSnapshot.child(post.getPublisherUid()).child("name").getValue(String.class);
+                    holder.username.setText(userName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("PostAdapter", "Error loading user name: " + databaseError.getMessage());
+            }
+        });
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profile_images");
+        StorageReference fileRef = storageReference.child(post.getPublisherUid() + ".jpeg");
+        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide
+                        .with(context)
+                        .load(uri)
+                        .placeholder(R.drawable.user_profile_default)
+                        .into(holder.image_profile);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                holder.image_profile.setImageResource(R.drawable.user_profile_default);
+            }
+        });
+
 
         holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +155,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
+        holder.delete.setVisibility(View.GONE);
+        if (currentUser.getUid().equals(post.getPublisherUid())) {
+            holder.delete.setVisibility(View.VISIBLE);
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deletePost(post.getPostId());
+                }
+            });
+        }
+
+
 
 
         // Display the total number of likes
@@ -141,6 +187,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 Log.e("PostAdapter", "Error loading like count: " + databaseError.getMessage());
             }
         });
+    }
+
+    private void deletePost(String postId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Delete Post");
+        builder.setMessage("Are you sure you want to delete this post?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("posts").child(postId);
+                postRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // If you also store images in Firebase Storage, remove the image using its reference.
+                            Toast.makeText(context, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Failed to delete the post", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private interface LikeStatusListener {
@@ -311,7 +391,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public class PostViewHolder extends RecyclerView.ViewHolder{
-        public TextView image_profile;
+        public ImageView image_profile;
         public ImageView post_image;
         public ImageView like;
         public ImageView comment;
@@ -322,6 +402,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public TextView description;
         public TextView comments;
         public ImageView share;
+        public ImageView delete;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -337,6 +418,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             description = itemView.findViewById(R.id.description);
             comments = itemView.findViewById(R.id.comments);
             share = itemView.findViewById(R.id.share);
+            delete = itemView.findViewById(R.id.delete);
         }
     }
 }
