@@ -6,13 +6,15 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Notification {
+public class NotificationGroupProject {
 
-    public Notification(String message, String heading, String notificationKey, String extraField, String extraData){
-        if(extraField != null && extraData != null) {
+    public NotificationGroupProject(String message, String heading, String notificationKey, String extraField, String extraData) {
+        System.out.println(message);
+        System.out.println(notificationKey);
+        if (extraField != null && extraData != null) {
             try {
                 JSONObject notificationContent = new JSONObject(
-                        "{'contents':{'en':'" + message + "'}," +
+                        "{'contents':{'en':'" + message + "','Content':'" + message + "'}," +
                                 "'include_player_ids':['" + notificationKey + "']," +
                                 "'headings':{'en': '" + heading + "'}," + "'data':{'" + extraField + "':'" + extraData + "'}}");
                 OneSignal.postNotification(notificationContent, null);
@@ -20,11 +22,10 @@ public class Notification {
                 Log.d("error", e.toString());
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             try {
                 JSONObject notificationContent = new JSONObject(
-                        "{'contents':{'en':'" + message + "'}," +
+                        "{'contents':{'en':'" + message + "','Content':'" + message + "'}," +
                                 "'include_player_ids':['" + notificationKey + "']," +
                                 "'headings':{'en': '" + heading + "'}}");
                 OneSignal.postNotification(notificationContent, null);

@@ -39,6 +39,7 @@ public class GroupProject extends AppCompatActivity {
     private SearchView searchView;
     private BottomNavigationView bottomNavigationView;
     private ActivityResultLauncher<Intent> signInLauncher;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,15 +110,19 @@ public class GroupProject extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         // Handle the error...
                     });
-            OSDeviceState deviceState = OneSignal.getDeviceState();
-            String userId = deviceState != null ? deviceState.getUserId() : null;
-            usersRef.child(uid).child("notificationKey").setValue(userId);
+
         }
     }
 
     private void Load(){
         bottomNavigationView  = findViewById(R.id.nav_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(null);
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("user_final");
+        if (mAuth.getCurrentUser() != null) {
+            OSDeviceState deviceState = OneSignal.getDeviceState();
+            String userId = deviceState != null ? deviceState.getUserId() : null;
+            usersRef.child(mAuth.getCurrentUser().getUid()).child("notificationKey").setValue(userId);
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
             @Override

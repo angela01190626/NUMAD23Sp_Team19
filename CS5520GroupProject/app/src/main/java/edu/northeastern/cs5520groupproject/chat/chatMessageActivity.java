@@ -114,54 +114,29 @@ public class chatMessageActivity extends AppCompatActivity {
                 mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
                         .child("sender").setValue(currentUser.getDisplayName());
 
-    //                final String[] token = new String[1];
-    //                FirebaseMessaging.getInstance().getToken()
-    //                        .addOnCompleteListener(new OnCompleteListener<String>() {
-    //                            @Override
-    //                            public void onComplete(@NonNull Task<String> task) {
-    //                                if (!task.isSuccessful()) {
-    //                                    System.out.println("Fetching FCM registration token failed" + task.getException());
-    //                                    return;
-    //                                }
-    //
-    //                                // Get new FCM registration token
-    //                                token[0] = task.getResult();
-    //                                System.out.println(token[0]);
-    //                                // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-    //                            }
-    //                        });
-    //
-    //                FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(token[0])
-    //                        .setMessageId(String.valueOf(messageId))
-    //                        .addData("title", "New message")
-    //                        .addData("body", input.getText().toString())
-    //                        .build());
-    //
-    //                showNotification("New message", input.getText().toString());
-                input.setText("");
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_final").child(receiverId);
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            if (dataSnapshot.child("notificationKey").exists()) {
+                                notification = dataSnapshot.child("notificationKey").getValue().toString();
+                            } else {
+                                notification = "";
+                            }
+                            new NotificationGroupProject(input.getText().toString(), "New message from: "
+                                    + currentUser.getDisplayName(), notification, "", "");
+                            input.setText("");
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
 
+                });
             }
         });
     }
-
-    private void showNotification(String title, String message) {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        String channelId = "My Notification Channel";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, "Channel Name", NotificationManager.IMPORTANCE_HIGH);
-            notificationChannel.setDescription("Channel description");
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_stat_notification)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        notificationManager.notify(1, notificationBuilder.build());
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -198,25 +173,6 @@ public class chatMessageActivity extends AppCompatActivity {
 
                     messageUser.setText(model.getUser().split("-")[0]);
                     messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_final").child(receiverId);
-                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()) {
-                                if (dataSnapshot.child("notificationKey").exists()) {
-                                    notification = dataSnapshot.child("notificationKey").getValue().toString();
-                                } else {
-                                    notification = "";
-                                }
-                                new Notification(model.getMessageTxt(), "New message from: " + model.getUser().split("-")[0], notification, "", "");
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-
-                    });
                 }
 
             }
