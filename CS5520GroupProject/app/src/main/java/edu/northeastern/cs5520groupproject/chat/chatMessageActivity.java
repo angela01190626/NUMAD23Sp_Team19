@@ -131,12 +131,15 @@ public class chatMessageActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+
                     }
 
                 });
+
             }
         });
     }
+    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

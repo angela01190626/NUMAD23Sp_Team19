@@ -166,14 +166,15 @@ public class BackendMessageService extends FirebaseMessagingService {
             builder = new NotificationCompat.Builder(this);
         }
 
-
-        notification = builder.setContentTitle(remoteMessageNotification.getTitle())
-                .setContentText(remoteMessageNotification.getBody())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build();
-        notificationManager.notify(0, notification);
+        if (remoteMessageNotification != null && remoteMessageNotification.getTitle() != null) {
+            notification = builder.setContentTitle(remoteMessageNotification.getTitle())
+                    .setContentText(remoteMessageNotification.getBody())
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .build();
+            notificationManager.notify(0, notification);
+        }
 
     }
 }
