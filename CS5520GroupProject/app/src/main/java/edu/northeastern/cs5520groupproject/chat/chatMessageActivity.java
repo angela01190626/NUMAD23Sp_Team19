@@ -39,6 +39,7 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.onesignal.OneSignal;
 //import android.support.design.widget.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -190,7 +191,6 @@ public class chatMessageActivity extends AppCompatActivity {
                 TextView messageTime = v.findViewById(R.id.message_time);
 
                 // set text
-
                 if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)
                         || model.getUser().equals(receiver + "-" + currentUser.getDisplayName())) {
                     messageText.setText(model.getMessageTxt());
@@ -205,7 +205,6 @@ public class chatMessageActivity extends AppCompatActivity {
                                 new Notification(model.getMessageTxt(), "New message from: " + model.getUser().split("-")[0], receiverId, "", "");
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 

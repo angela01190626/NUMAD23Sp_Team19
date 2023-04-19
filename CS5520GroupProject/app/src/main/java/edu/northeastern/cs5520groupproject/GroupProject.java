@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.onesignal.OSDeviceState;
+import com.onesignal.OneSignal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +45,8 @@ public class GroupProject extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage_project);
+        OneSignal.initWithContext(this);
+        OneSignal.setAppId("84878094-4ae4-418c-9633-45a7b9be30d1");
         signInLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
@@ -105,6 +109,9 @@ public class GroupProject extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         // Handle the error...
                     });
+            OSDeviceState deviceState = OneSignal.getDeviceState();
+            String userId = deviceState != null ? deviceState.getUserId() : null;
+            usersRef.child(uid).child("notificationKey").setValue(userId);
         }
     }
 
