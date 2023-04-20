@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.CourseListFragment;
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.YogaListFragment;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView.ImageAdapter;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView.SpaceItemDecoration;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ImageButton runButton;
+    private ImageButton yogaButton;
     private ImageAdapter imageAdapter = new ImageAdapter(new int[]{R.drawable.sample1, R.drawable.sample2,
             R.drawable.sample3,R.drawable.sample4,R.drawable.sample5,R.drawable.sample6,R.drawable.sample7}
             ,new String[]{"Jacky","Alice","Joy","Nancy","Alex","Jojo","Fan"});
@@ -41,6 +43,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
 
         runButton =  v.findViewById(R.id.running_button);
+        yogaButton = v.findViewById(R.id.yoga_button);
 
 
         // add 点击事件
@@ -55,6 +58,23 @@ public class HomeFragment extends Fragment {
                 transaction.replace(R.id.fragment_container, courseListFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+
+        // add click event for yoga button
+        yogaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 创建一个新的 Fragment 实例
+                YogaListFragment yogaCourseListFragment = new YogaListFragment();
+
+                // 将该 Fragment 添加到 Activity 中
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, yogaCourseListFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
             }
         });
 
