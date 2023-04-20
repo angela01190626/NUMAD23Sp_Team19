@@ -43,6 +43,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.northeastern.cs5520groupproject.R;
 import edu.northeastern.cs5520groupproject.login.User;
@@ -266,6 +268,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private void likePost(final String postId, final ImageView likeImage, final TextView likeCount) {
         DatabaseReference postLikesRef = FirebaseDatabase.getInstance().getReference("post-likes").child(postId);
         DatabaseReference likeCountRef = FirebaseDatabase.getInstance().getReference("likes").child(postId);
+        DatabaseReference postContentRef = FirebaseDatabase.getInstance().getReference("posts").child(postId).child("description");
 
         postLikesRef.child(currentUser.getUid()).setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -278,11 +281,35 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 likeCountRef.setValue(currentLikeCount + 1);
             }
         });
+
+        postContentRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String postContent = dataSnapshot.getValue(String.class);
+                Pattern pattern = Pattern.compile("(?<=^|\\s)#\\w+");
+                Matcher matcher = pattern.matcher(postContent);
+
+                DatabaseReference userLikedHashtagsRef = FirebaseDatabase.getInstance().getReference("userLikedHashtags").child(currentUser.getUid());
+
+                while (matcher.find()) {
+                    String hashtag = matcher.group().substring(1); // Remove '#' at the beginning
+                    userLikedHashtagsRef.child(hashtag).setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("likePost", "Error loading post content: " + databaseError.getMessage());
+            }
+        });
     }
+
+
 
     private void unlikePost(final String postId, final ImageView likeImage, final TextView likeCount) {
         DatabaseReference postLikesRef = FirebaseDatabase.getInstance().getReference("post-likes").child(postId);
         DatabaseReference likeCountRef = FirebaseDatabase.getInstance().getReference("likes").child(postId);
+        DatabaseReference postContentRef = FirebaseDatabase.getInstance().getReference("posts").child(postId).child("description");
 
         postLikesRef.child(currentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -295,7 +322,30 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 likeCountRef.setValue(currentLikeCount - 1);
             }
         });
+
+        postContentRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String postContent = dataSnapshot.getValue(String.class);
+                Pattern pattern = Pattern.compile("(?<=^|\\s)#\\w+");
+                Matcher matcher = pattern.matcher(postContent);
+
+                DatabaseReference userLikedHashtagsRef = FirebaseDatabase.getInstance().getReference("userLikedHashtags").child(currentUser.getUid());
+
+                while (matcher.find()) {
+                    String hashtag = matcher.group().substring(1); // Remove '#' at the beginning
+                    userLikedHashtagsRef.child(hashtag).removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("unlikePost", "Error loading post content: " + databaseError.getMessage());
+            }
+        });
     }
+
+
 
     public static void showDialog(Context context, String postId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
