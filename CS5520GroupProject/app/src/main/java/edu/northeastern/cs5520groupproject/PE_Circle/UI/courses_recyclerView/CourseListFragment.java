@@ -44,29 +44,29 @@ public class CourseListFragment extends Fragment {
         // 创建课程列表
         // ...
         Course course1 = new Course("001","15-minute aerobic fat-burning run","Mins: 15", "120-180 cal","level: K1",
-                R.drawable.run001);
+                R.drawable.run001,"Price: $10");
         Course course2 = new Course("002","Music fat-burning run","Mins: 25", "195-293 cal","level: K2",
-                R.drawable.run002);
+                R.drawable.run002, "Price: $10");
 
         Course course3 = new Course("003","Boys' 1000m special training","Mins: 36", "301-451 cal","level: K2",
-                R.drawable.run003);
+                R.drawable.run003,"Price: $10");
         Course course4 = new Course("004","Music stress-relieving run","Mins: 25", "88-132 cal","level: K2",
-                R.drawable.run004);
+                R.drawable.run004,"Price: $10");
 
         Course course5 = new Course("005","Speed engine","Mins: 30", "310-464 cal","level: K3",
-                R.drawable.run005);
+                R.drawable.run005,"Price: $10");
         Course course6 = new Course("006","Advanced fat-burning HIIT run","Mins: 29", "286-428 cal","level: K3",
-                R.drawable.run006);
+                R.drawable.run006,"Price: $10");
 
         Course course7 = new Course("007","Intensive fat-burning HIIT run","Mins: 35", "407-611 cal","level: K3",
-                R.drawable.run007);
+                R.drawable.run007,"Price: $10");
         Course course8 = new Course("008","Easy run for beginners","Mins: 20", "144-216 cal","level: K1",
-                R.drawable.run008);
+                R.drawable.run008,"Price: $10");
 
         Course course9 = new Course("009","35-minute aerobic fat-burning run 01","Mins: 35", "297-445 cal","level: K2",
-                R.drawable.run009);
+                R.drawable.run009,"Price: $10");
         Course course10 = new Course("0010","Free run","Mins: 30", "250-320 cal","level: K2",
-                R.drawable.run010);
+                R.drawable.run010,"Price: $10");
 
 
 

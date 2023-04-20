@@ -10,16 +10,19 @@ public class Course {
 
     private int imageResource;
 
+    private String price;
+
     public Course() {
     }
 
-    public Course(String id, String courseName, String timeDuration, String calorieCount, String level, int imageResource) {
+    public Course(String id, String courseName, String timeDuration, String calorieCount, String level, int imageResource, String price) {
         this.id = id;
         this.courseName = courseName;
         this.timeDuration = timeDuration;
         this.calorieCount = calorieCount;
         this.level = level;
         this.imageResource = imageResource;
+        this.price = price;
     }
 
     public String getId() {
@@ -68,5 +71,13 @@ public class Course {
 
     public void setImageResource(int imageResource) {
         this.imageResource = imageResource;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

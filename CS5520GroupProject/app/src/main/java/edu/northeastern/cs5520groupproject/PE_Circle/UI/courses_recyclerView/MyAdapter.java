@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public TextView calorieCount;
         public TextView level;
 
+        public TextView price;
+
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
@@ -42,6 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             courseDuration = itemView.findViewById(R.id.course_duration);
             calorieCount = itemView.findViewById(R.id.calorie_count);
             level = itemView.findViewById(R.id.level);
+            price = itemView.findViewById(R.id.price);
         }
     }
 
@@ -65,6 +70,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.courseDuration.setText(course.getTimeDuration());
         holder.calorieCount.setText(course.getCalorieCount());
         holder.level.setText(course.getLevel());
+        holder.price.setText(course.getPrice());
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
