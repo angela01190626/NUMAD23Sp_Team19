@@ -6,33 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".ChatFragment">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/search_view"
+        app:layout_constraintVertical_bias="0.0">
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id ="@+id/chat_recycle_view"
+            android:id="@+id/chat_recycle_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="1dp"
-            tools:ignore="MissingConstraints" />
-        </ScrollView>
-
-    <!--    <Button-->
-    <!--        android:id="@+id/chat_btn"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="21dp"-->
-    <!--        android:layout_marginEnd="302dp"-->
-    <!--        android:layout_marginBottom="90dp"-->
-    <!--        android:text="chat"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent" />-->
+            tools:layout_editor_absoluteY="1dp" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
