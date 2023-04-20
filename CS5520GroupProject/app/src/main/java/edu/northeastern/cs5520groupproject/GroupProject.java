@@ -83,11 +83,10 @@ public class GroupProject extends AppCompatActivity {
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
-//            signInLauncher.launch(
-//                    AuthUI.getInstance()
-//                            .createSignInIntentBuilder()
-//                            .build());
-            Load();
+            signInLauncher.launch(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .build());
         } else {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -130,27 +129,13 @@ public class GroupProject extends AppCompatActivity {
                     // 根据所选菜单项ID执行相应操作
                 switch (item.getItemId()) {
                     case R.id.navigation_me:
-                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                            loadFragment(new ProfileFragment());
-                        } else {
-                            signInLauncher.launch(
-                                    AuthUI.getInstance()
-                                            .createSignInIntentBuilder()
-                                            .build());
-                        }
+                        loadFragment(new ProfileFragment());
                         return true;
                     case R.id.navigation_home:
                         loadFragment(new HomeFragment());
                         return true;
                     case R.id.navigation_message:
-                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                            loadFragment(new ChatFragment());
-                        } else {
-                            signInLauncher.launch(
-                                    AuthUI.getInstance()
-                                            .createSignInIntentBuilder()
-                                            .build());
-                        }
+                        loadFragment(new ChatFragment());
                         return true;
                     case R.id.navigation_post:
                         // 在这里处理发布图标点击
