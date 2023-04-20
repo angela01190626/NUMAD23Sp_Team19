@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import edu.northeastern.cs5520groupproject.R;
 import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
@@ -18,11 +20,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder> {
 
     private List<Chat> chatList;
     // private final Context context;
+    private List<Chat> filteredChatList;
 
     public int row_index;
 
     public ChatAdapter(List<Chat> chatList) {
         this.chatList = chatList;
+        this.filteredChatList = new ArrayList<>();
         row_index = -1;
     }
 
@@ -56,5 +60,25 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder> {
     public void setChatList(List<Chat> chatList) {
         this.chatList = chatList;
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public List<Chat> filter(String searchText) {
+        filteredChatList.clear();
+
+        if (searchText.length() == 0) {
+            filteredChatList.addAll(chatList);
+        } else {
+            searchText = searchText.toLowerCase();
+            for (Chat chat : chatList) {
+                if (chat.getName() != null && chat.getName().toLowerCase(Locale.getDefault()).contains(searchText)) {
+                    filteredChatList.add(chat);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+        return filteredChatList;
+    }
+
 
 }
