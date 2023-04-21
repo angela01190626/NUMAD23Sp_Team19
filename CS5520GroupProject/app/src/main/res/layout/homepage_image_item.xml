@@ -7,19 +7,19 @@
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="218dp"
-        android:layout_height="304dp"
+        android:layout_width="203dp"
+        android:layout_height="291dp"
         android:scaleType="fitCenter"
         android:src="@drawable/sample1" />
 
     <LinearLayout
-        android:layout_width="218dp"
-        android:layout_height="wrap_content"
+        android:layout_width="203dp"
+        android:layout_height="23dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/userName_home"
-            android:layout_width="160dp"
+            android:layout_width="148dp"
             android:layout_height="match_parent"
             android:text="username"
             android:textSize="16sp"

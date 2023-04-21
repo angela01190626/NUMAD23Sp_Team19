@@ -9,17 +9,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.Course;
 import edu.northeastern.cs5520groupproject.R;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
     private int[] imageIds;
     private String[] usernameList; // new
 
+    private List<imageItem> coachs = new ArrayList<>();
 
-    public ImageAdapter(int[] imageIds, String[] usernameList) {
+
+   /* public ImageAdapter(int[] imageIds, String[] usernameList) {
         this.imageIds = imageIds;
         this.usernameList = usernameList; // new
 
+    }*/
+
+
+    public ImageAdapter(List<imageItem> coachs) {
+        this.coachs = coachs;
     }
 
     @NonNull
@@ -31,8 +42,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        holder.imageView.setImageResource(imageIds[position]);
-        holder.usernameView.setText(usernameList[position]);
+        imageItem coach = coachs.get(position);
+        holder.imageView.setImageResource(coach.getImage());
+        holder.usernameView.setText(coach.getUsername());
 
         holder.likeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +57,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public int getItemCount() {
-        return imageIds.length;
+        return coachs.size();
     }
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
