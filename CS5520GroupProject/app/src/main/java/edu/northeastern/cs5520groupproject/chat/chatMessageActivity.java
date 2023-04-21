@@ -1,19 +1,16 @@
 package edu.northeastern.cs5520groupproject.chat;
 
-//import static edu.northeastern.cs5520groupproject.GroupProject.SIGN_IN_REQUEST_CODE;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
-import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
 import edu.northeastern.cs5520groupproject.R;
 
 public class chatMessageActivity extends AppCompatActivity {
@@ -59,6 +55,7 @@ public class chatMessageActivity extends AppCompatActivity {
     private FirebaseListAdapter<Message> adapter;
 
     private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseFriend;
     private FirebaseListAdapter<Message> mAdapter;
     private List<Message> messageList= new ArrayList<>();
 
@@ -75,6 +72,31 @@ public class chatMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_message);
 
+        mDatabaseFriend = FirebaseDatabase.getInstance().getReference("FriendList");
+        mDatabaseFriend.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
+                        Chat friend = friendSnapshot.getValue(Chat.class);
+                        if (friend != null && friend.getUid().equals(receiverId)) {
+                            // Friend is added, display chat messages
+                            displayChatMessages(receiverId);
+                            return;
+                        }
+                    }
+                }
+                    // Show the add friend dialog
+                showDialogue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+
+
         receiver = getIntent().getStringExtra("receiver");
         receiverId = getIntent().getStringExtra("receiverId");
         // check if user is login
@@ -85,14 +107,11 @@ public class chatMessageActivity extends AppCompatActivity {
             Toast.makeText(this, "Welcome " + FirebaseAuth.getInstance().getCurrentUser()
                     .getDisplayName(), Toast.LENGTH_LONG).show();
         }
-        // load chat room
-        //getAllMessages();
-        displayChatMessages(receiverId);
 
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("chatHistory");
+
+        // displayChatMessages(receiverId);
         Button button =  findViewById(R.id.fab);
-
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("chatHistory");
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +158,7 @@ public class chatMessageActivity extends AppCompatActivity {
             }
         });
     }
-    
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -181,6 +200,30 @@ public class chatMessageActivity extends AppCompatActivity {
             }
         };
         listMessage.setAdapter(adapter);
+    }
+
+
+    private void showDialogue() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(chatMessageActivity.this);
+        builder.setMessage("You are not friends with " + receiver + ". Add them as a friend to start a chat?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Add the friend to the database and display chat messages
+                        String friendId = mDatabaseFriend.child(currentUser.getUid()).push().getKey();
+                        mDatabaseFriend.child(currentUser.getUid()).child(friendId)
+                                .setValue(new Chat(receiverId, receiver));
+                        displayChatMessages(receiverId);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Close the dialogue
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 

@@ -26,6 +26,7 @@ import java.util.List;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatHistory;
 import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
 
 public class ChatFragment extends Fragment {
@@ -88,21 +89,40 @@ public class ChatFragment extends Fragment {
     }
 
     private void queryDatabase() {
-        databaseReference = FirebaseDatabase.getInstance().getReference("user_final");
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("FriendList");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    Chat chat = userSnapshot.getValue(Chat.class);
-                    chatList.add(chat);
-                }
+                    if (userSnapshot.getKey().equals(currentUserId)) {
+                        for (DataSnapshot user : userSnapshot.getChildren()) {
+                            Chat chat = user.getValue(Chat.class);
+                            chatList.add(chat);
+                        }
+                    }
+                    else if (userSnapshot.getValue().toString().contains(currentUserId)) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user_final")
+                                .child(userSnapshot.getKey());
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Chat chat = dataSnapshot.getValue(Chat.class);
+                                chatList.add(chat);
+                            }
 
-                // 在这里处理和显示用户列表
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Handle errors here
+                            }
+                        });
+                    }
+                }
                 chatAdapter = new ChatAdapter(chatList);
                 recyclerView.setAdapter(chatAdapter);
-            }
 
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // 错误处理
