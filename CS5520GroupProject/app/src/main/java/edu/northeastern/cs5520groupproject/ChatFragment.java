@@ -110,6 +110,7 @@ public class ChatFragment extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Chat chat = dataSnapshot.getValue(Chat.class);
                                 chatList.add(chat);
+                                chatAdapter.notifyDataSetChanged();
                             }
 
                             @Override
