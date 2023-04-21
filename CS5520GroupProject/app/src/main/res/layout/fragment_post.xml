@@ -21,12 +21,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="180dp"
-                    android:layout_height="50dp"
+                <Switch
+                    android:id="@+id/smartFeedSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginLeft="-10dp"
-                    android:src="@drawable/logo" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:minHeight="48dp"
+                    android:minWidth="48dp"
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:textOff="OFF"
+                    android:textOn="ON"
+                    android:thumbTint="@color/switch_thumb_color"
+                    android:trackTint="@color/switch_track_color" />
+
+                <TextView
+                    android:id="@+id/smartFeedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/smartFeedSwitch"
+                    android:layout_marginStart="8dp"
+                    android:layout_centerVertical="true"
+                    android:text="Smart Feed"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="50dp"
@@ -34,7 +54,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/ic_add_story"
-                    android:id="@+id/add_new_post"/>
+                    android:id="@+id/add_new_post"
+                    android:layout_centerVertical="true" />
 
             </RelativeLayout>
 
@@ -55,12 +76,6 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:id="@+id/recycler_view_story"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/recycler_view1"/>
 
         </LinearLayout>
@@ -68,9 +83,9 @@
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
+        android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progress_circular"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

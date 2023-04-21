@@ -10,4 +10,7 @@
     <string name="title_me">Me</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_posts_button">My Posts</string>
+    <string name="my_plans_button">My Plans</string>
+    <string name="add_plan">Add Plan</string>
 </resources>
