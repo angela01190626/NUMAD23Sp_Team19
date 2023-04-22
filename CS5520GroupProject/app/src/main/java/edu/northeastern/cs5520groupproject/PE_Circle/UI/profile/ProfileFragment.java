@@ -4,6 +4,8 @@ import static android.app.Activity.RESULT_OK;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +60,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import edu.northeastern.cs5520groupproject.AddPostActivity;
 import edu.northeastern.cs5520groupproject.R;
+import edu.northeastern.cs5520groupproject.post.Post;
+import edu.northeastern.cs5520groupproject.post.PostAdapter;
+import edu.northeastern.cs5520groupproject.post.PostAdapterInProfile;
 
 
 public class ProfileFragment extends Fragment {
@@ -65,33 +72,96 @@ public class ProfileFragment extends Fragment {
     DatabaseReference databaseRef;
     TextView profileEmail;
     TextView joinSince;
-     RecyclerView recyclerView;
-     List<PlanItem> planItems;
+    List<PlanItem> planItems;
     PlanAdapter planAdapter;
-    EditText etPlan;
     CircleImageView profileImage;
 //    Button updateImageBtn;
     DatabaseReference userRef;
     StorageReference storageReference;
     Uri filepath;
     StorageReference fileRef;
+    ImageButton myPostsButton;
+    ImageButton myPlansButton;
+    RecyclerView recyclerViewMyPosts;
+    RecyclerView recyclerViewMyPlans;
+    Button addPlanButton;
+    private PostAdapterInProfile postAdapter;
+    private List<Post> postList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile_new, container, false);
         String email = currentUser.getEmail();
         Date creationDate = new Date(currentUser.getMetadata().getCreationTimestamp());
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         String strDate = dateFormat.format(creationDate);
 
-        profileImage=view.findViewById(R.id.profileImage);
+        profileImage = view.findViewById(R.id.profileImage);
 
         userRef= FirebaseDatabase.getInstance().getReference("userImage");
 
         storageReference= FirebaseStorage.getInstance().getReference("profile_images");
         fileRef= storageReference.child(currentUser.getUid() + ".jpeg");
+
+        myPostsButton = view.findViewById(R.id.myPosts);
+        myPlansButton = view.findViewById(R.id.myPlans);
+        recyclerViewMyPosts = view.findViewById(R.id.recyclerViewMyPosts);
+        recyclerViewMyPlans = view.findViewById(R.id.recyclerViewMyPlans);
+        addPlanButton = view.findViewById(R.id.addPlanButton);
+        recyclerViewMyPosts.setVisibility(View.VISIBLE);
+        recyclerViewMyPlans.setVisibility(View.GONE);
+        addPlanButton.setVisibility(View.GONE);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
+        linearLayoutManager1.setReverseLayout(true);
+        linearLayoutManager1.setStackFromEnd(true);
+
+        recyclerViewMyPlans.setLayoutManager(linearLayoutManager);
+
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapterInProfile(getContext() , postList);
+        recyclerViewMyPosts.setLayoutManager(linearLayoutManager1);
+        recyclerViewMyPosts.setAdapter(postAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewMyPosts.getContext(), LinearLayoutManager.VERTICAL);
+        recyclerViewMyPosts.addItemDecoration(dividerItemDecoration);
+
+        profileEmail= view.findViewById(R.id.profileEmail);
+        profileEmail.setText("Email: "+email);
+        joinSince= view.findViewById(R.id.joinDate);
+        joinSince.setText("Join Since: "+strDate);
+
+        myPostsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerViewMyPosts.setVisibility(View.VISIBLE);
+                recyclerViewMyPlans.setVisibility(View.GONE);
+                addPlanButton.setVisibility(View.GONE);
+            }
+        });
+
+        myPlansButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerViewMyPosts.setVisibility(View.GONE);
+                recyclerViewMyPlans.setVisibility(View.VISIBLE);
+                addPlanButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        addPlanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddPlanDialog(getContext());
+            }
+        });
+
+
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -104,19 +174,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        profileEmail= view.findViewById(R.id.profileEmail);
-        profileEmail.setText("Email: "+email);
-        joinSince= view.findViewById(R.id.joinDate);
-        joinSince.setText("Join Since: "+strDate);
-
-        // Initialize RecyclerView
-        recyclerView = view.findViewById(R.id.planList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewMyPlans.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Initialize plan items list and adapter
         planItems = new ArrayList<>();
         planAdapter = new PlanAdapter(planItems);
-        recyclerView.setAdapter(planAdapter);
+        recyclerViewMyPlans.setAdapter(planAdapter);
         databaseRef = FirebaseDatabase.getInstance().getReference("plan");
 
         databaseRef.child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -136,16 +199,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        etPlan = view.findViewById(R.id.et_plan);
-
-        Button btnAddPlan = view.findViewById(R.id.btn_add_plan);
-        btnAddPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String plan = etPlan.getText().toString();
-                addPlanToDatabase(plan);
-            }
-        });
 
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,9 +208,38 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        fetchPosts();
+
         return view ;
 
     }
+
+    private void showAddPlanDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_plan, null);
+        builder.setView(dialogView);
+
+        final EditText editTextPlanTitle = dialogView.findViewById(R.id.editTextPlanTitle);
+        Button confirmAddPlanButton = dialogView.findViewById(R.id.confirmAddPlanButton);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        confirmAddPlanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = editTextPlanTitle.getText().toString().trim();
+                if (!title.isEmpty()) {
+                    addPlanToDatabase(title);
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getActivity(), "Please enter a plan title", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private void addPlanToDatabase(String title) {
         String uid = currentUser.getUid();
         String planItemId = databaseRef.push().getKey();
@@ -235,7 +317,30 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
-        }
+    }
+
+    private void fetchPosts() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postList.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    if (post.getPublisherUid().equals(currentUser.getUid())) {
+                        postList.add(post);
+                    }
+                }
+                // Notify your RecyclerView's adapter about the updated data
+                postAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "Error fetching posts: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
 

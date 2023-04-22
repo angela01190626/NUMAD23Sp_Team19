@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.northeastern.cs5520groupproject.post.Post;
 import edu.northeastern.cs5520groupproject.post.PostAdapter;
@@ -36,6 +43,16 @@ public class PostFragment extends Fragment {
     private ProgressBar progressBar;
 
     private ImageView newPostButton;
+
+    Switch smartFeedSwitch;
+
+    FirebaseUser currentUser;
+
+    Boolean isChecked;
+
+    DatabaseReference databaseReference;
+
+    DatabaseReference userLikedHashtagsRef;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,29 +70,79 @@ public class PostFragment extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
         progressBar = view.findViewById(R.id.progress_circular);
         newPostButton = view.findViewById(R.id.add_new_post);
+        smartFeedSwitch = view.findViewById(R.id.smartFeedSwitch);
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("posts");
+        userLikedHashtagsRef = FirebaseDatabase.getInstance().getReference("userLikedHashtags").child(currentUser.getUid());
+
+        isChecked = false;
 
         newPostButton.setOnClickListener((v) -> {
             Intent myIntent = new Intent(getActivity(), AddPostActivity.class);
             startActivity(myIntent);
         });
 
-        fetchPosts();
+        smartFeedSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            progressBar.setVisibility(View.VISIBLE);
+            fetchPosts(isChecked);
+        });
+
+        fetchPosts(isChecked);
 
         return view;
     }
 
-    private void fetchPosts() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("posts");
+    private void fetchPosts(boolean fetchSmartFeed) {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post post = postSnapshot.getValue(Post.class);
-                    postList.add(post);
+
+                if (fetchSmartFeed) {
+                    userLikedHashtagsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot likedHashtagsSnapshot) {
+                            Set<String> likedHashtags = new HashSet<>();
+                            for (DataSnapshot snapshot : likedHashtagsSnapshot.getChildren()) {
+                                likedHashtags.add(snapshot.getKey());
+                            }
+
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Post post = postSnapshot.getValue(Post.class);
+                                String postContent = post.getDescription();
+                                Pattern pattern = Pattern.compile("(?<=^|\\s)#\\w+");
+                                Matcher matcher = pattern.matcher(postContent);
+                                boolean hasLikedHashtags = false;
+
+                                while (matcher.find()) {
+                                    if (likedHashtags.contains(matcher.group().substring(1))) {
+                                        hasLikedHashtags = true;
+                                        break;
+                                    }
+                                }
+
+                                if (hasLikedHashtags) {
+                                    postList.add(post);
+                                }
+                            }
+
+                            postAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(getActivity(), "Error fetching liked hashtags: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Post post = postSnapshot.getValue(Post.class);
+                        postList.add(post);
+                    }
+
+                    postAdapter.notifyDataSetChanged();
                 }
-                // Notify your RecyclerView's adapter about the updated data
-                postAdapter.notifyDataSetChanged();
             }
 
             @Override
