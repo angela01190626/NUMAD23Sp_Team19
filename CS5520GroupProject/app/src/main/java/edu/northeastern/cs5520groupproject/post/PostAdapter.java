@@ -6,7 +6,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.northeastern.cs5520groupproject.AddPostActivity;
+import edu.northeastern.cs5520groupproject.ProfileActivity;
 import edu.northeastern.cs5520groupproject.R;
 import edu.northeastern.cs5520groupproject.login.User;
 
@@ -111,6 +115,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             public void onFailure(@NonNull Exception e) {
                 holder.image_profile.setImageResource(R.drawable.user_profile_default);
             }
+        });
+
+        holder.image_profile.setOnClickListener((v) -> {
+            Intent myIntent = new Intent(context, ProfileActivity.class);
+            Bundle b = new Bundle();
+            b.putString("publisherId", post.getPublisherUid());
+            myIntent.putExtras(b);
+            context.startActivity(myIntent);
         });
 
 
