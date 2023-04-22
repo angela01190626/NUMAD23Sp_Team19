@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 //import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -73,29 +74,6 @@ public class chatMessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_message);
 
         mDatabaseFriend = FirebaseDatabase.getInstance().getReference("FriendList");
-        mDatabaseFriend.child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
-                        Chat friend = friendSnapshot.getValue(Chat.class);
-                        if (friend != null && friend.getUid().equals(receiverId)) {
-                            // Friend is added, display chat messages
-                            displayChatMessages(receiverId);
-                            return;
-                        }
-                    }
-                }
-                    // Show the add friend dialog
-                showDialogue();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle error
-            }
-        });
-
 
         receiver = getIntent().getStringExtra("receiver");
         receiverId = getIntent().getStringExtra("receiverId");
@@ -110,7 +88,7 @@ public class chatMessageActivity extends AppCompatActivity {
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("chatHistory");
 
-        // displayChatMessages(receiverId);
+        displayChatMessages(receiver);
         Button button =  findViewById(R.id.fab);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +110,12 @@ public class chatMessageActivity extends AppCompatActivity {
                         .child(receiverMessageId).setValue(receiverMessage);
                 mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
                         .child("sender").setValue(currentUser.getDisplayName());
+
+                if (!mDatabaseFriend.child(currentUser.getUid()).toString().contains(receiverId)) {
+                    String friendId = mDatabaseFriend.child(currentUser.getUid()).push().getKey();
+                    mDatabaseFriend.child(currentUser.getUid()).child(friendId)
+                            .setValue(new Chat(receiverId, receiver));
+                }
 
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_final").child(receiverId);
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -166,6 +150,7 @@ public class chatMessageActivity extends AppCompatActivity {
         if(requestCode == SIGN_IN_REQUEST_CODE) {
             Toast.makeText(this, "Successfully signed in!", Toast.LENGTH_SHORT).show();
             displayChatMessages(receiverId);
+            System.out.println(receiverId);
         }else{
             Toast.makeText(this, "Can not sign in. Please try again", Toast.LENGTH_SHORT).show();
             finish();
@@ -173,10 +158,11 @@ public class chatMessageActivity extends AppCompatActivity {
     }
 
 
-    private void displayChatMessages(String receiverId){
+    private void displayChatMessages(String receiver){
         ListView listMessage = (ListView) findViewById(R.id.list_of_messages);
 
         String userId = currentUser.getUid();
+        String name = currentUser.getDisplayName();
         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory").child("userId");
 
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.pe_message_list
@@ -187,19 +173,40 @@ public class chatMessageActivity extends AppCompatActivity {
                 TextView messageText = v.findViewById(R.id.message_text);
                 TextView messageUser = v.findViewById(R.id.message_user);
                 TextView messageTime = v.findViewById(R.id.message_time);
-
+                System.out.println(name);
+                System.out.println(receiver);
+                System.out.println(model.getUser());
                 // set text
-                if (model.getUser().equals(currentUser.getDisplayName() + "-" + receiver)
-                        || model.getUser().equals(receiver + "-" + currentUser.getDisplayName())) {
+                if (model.getUser().equals(name + "-" + receiver)
+                        || model.getUser().equals(receiver + "-" + name)) {
                     messageText.setText(model.getMessageTxt());
 
                     messageUser.setText(model.getUser().split("-")[0]);
                     messageTime.setText(DateFormat.format("MM-dd-yyyy (HH:mm:ss)", model.getTime()));
+
                 }
 
             }
         };
         listMessage.setAdapter(adapter);
+        messageRef.child(userId).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
 

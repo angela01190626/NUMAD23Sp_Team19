@@ -41,6 +41,9 @@ public class Chat {
         this.stickerId = stickerId;
     }
 
+    public Chat(String receiverId) {
+        this.uid = receiverId;
+    }
 
 
     public int getStickerId() {

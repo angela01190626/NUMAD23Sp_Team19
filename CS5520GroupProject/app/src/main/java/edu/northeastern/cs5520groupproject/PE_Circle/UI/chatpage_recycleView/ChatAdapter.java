@@ -46,6 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder> {
             String receiver = selectedChat.getName();
             String receiverId = selectedChat.getUid();
             Intent chatIntent = new Intent(view.getContext(), chatMessageActivity.class);
+            System.out.println("receiver" + receiver);
             chatIntent.putExtra("receiver", receiver);
             chatIntent.putExtra("receiverId", receiverId);
             view.getContext().startActivity(chatIntent);
