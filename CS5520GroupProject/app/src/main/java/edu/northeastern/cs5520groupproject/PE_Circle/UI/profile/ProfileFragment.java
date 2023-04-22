@@ -63,6 +63,8 @@ import edu.northeastern.cs5520groupproject.R;
 import edu.northeastern.cs5520groupproject.post.Post;
 import edu.northeastern.cs5520groupproject.post.PostAdapter;
 import edu.northeastern.cs5520groupproject.post.PostAdapterInProfile;
+import edu.northeastern.cs5520groupproject.shopping.Purchase;
+import edu.northeastern.cs5520groupproject.shopping.PurchaseAdapter;
 
 
 public class ProfileFragment extends Fragment {
@@ -70,23 +72,27 @@ public class ProfileFragment extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
     DatabaseReference databaseRef;
+    TextView profileName;
     TextView profileEmail;
     TextView joinSince;
     List<PlanItem> planItems;
     PlanAdapter planAdapter;
     CircleImageView profileImage;
-//    Button updateImageBtn;
     DatabaseReference userRef;
     StorageReference storageReference;
     Uri filepath;
     StorageReference fileRef;
     ImageButton myPostsButton;
     ImageButton myPlansButton;
+    ImageButton myPurchasesButton;
     RecyclerView recyclerViewMyPosts;
     RecyclerView recyclerViewMyPlans;
+    RecyclerView recyclerViewMyPurchases;
     Button addPlanButton;
     private PostAdapterInProfile postAdapter;
     private List<Post> postList;
+    private PurchaseAdapter purchaseAdapter;
+    private List<Purchase> purchaseList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,20 +101,43 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_new, container, false);
         String email = currentUser.getEmail();
         Date creationDate = new Date(currentUser.getMetadata().getCreationTimestamp());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(creationDate);
 
         profileImage = view.findViewById(R.id.profileImage);
 
         userRef= FirebaseDatabase.getInstance().getReference("userImage");
 
+        DatabaseReference userTypeRef = FirebaseDatabase.getInstance().getReference("user_type").child(currentUser.getUid());
+        userTypeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String userType;
+                if (dataSnapshot.exists()) {
+                    userType = dataSnapshot.getValue(String.class);
+                } else {
+                    userType = "user";
+                    userTypeRef.setValue(userType);
+                }
+                setBadge(userType);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "Error fetching user type: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         storageReference= FirebaseStorage.getInstance().getReference("profile_images");
-        fileRef= storageReference.child(currentUser.getUid() + ".jpeg");
+        fileRef = storageReference.child(currentUser.getUid() + ".jpeg");
 
         myPostsButton = view.findViewById(R.id.myPosts);
         myPlansButton = view.findViewById(R.id.myPlans);
+        myPurchasesButton = view.findViewById(R.id.myPurchases);
         recyclerViewMyPosts = view.findViewById(R.id.recyclerViewMyPosts);
         recyclerViewMyPlans = view.findViewById(R.id.recyclerViewMyPlans);
+        recyclerViewMyPurchases = view.findViewById(R.id.recyclerViewMyPurchases);
         addPlanButton = view.findViewById(R.id.addPlanButton);
         recyclerViewMyPosts.setVisibility(View.VISIBLE);
         recyclerViewMyPlans.setVisibility(View.GONE);
@@ -122,15 +151,26 @@ public class ProfileFragment extends Fragment {
         linearLayoutManager1.setReverseLayout(true);
         linearLayoutManager1.setStackFromEnd(true);
 
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getContext());
+        linearLayoutManager2.setReverseLayout(true);
+        linearLayoutManager2.setStackFromEnd(true);
+
         recyclerViewMyPlans.setLayoutManager(linearLayoutManager);
 
         postList = new ArrayList<>();
-        postAdapter = new PostAdapterInProfile(getContext() , postList);
+        postAdapter = new PostAdapterInProfile(getContext(), postList);
         recyclerViewMyPosts.setLayoutManager(linearLayoutManager1);
         recyclerViewMyPosts.setAdapter(postAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewMyPosts.getContext(), LinearLayoutManager.VERTICAL);
         recyclerViewMyPosts.addItemDecoration(dividerItemDecoration);
 
+        purchaseList = new ArrayList<>();
+        purchaseAdapter = new PurchaseAdapter(getContext(), purchaseList);
+        recyclerViewMyPurchases.setLayoutManager(linearLayoutManager2);
+        recyclerViewMyPurchases.setAdapter(purchaseAdapter);
+
+        profileName = view.findViewById(R.id.profileName);
+        profileName.setText("Name: " + currentUser.getDisplayName());
         profileEmail= view.findViewById(R.id.profileEmail);
         profileEmail.setText("Email: "+email);
         joinSince= view.findViewById(R.id.joinDate);
@@ -142,6 +182,7 @@ public class ProfileFragment extends Fragment {
                 recyclerViewMyPosts.setVisibility(View.VISIBLE);
                 recyclerViewMyPlans.setVisibility(View.GONE);
                 addPlanButton.setVisibility(View.GONE);
+                recyclerViewMyPurchases.setVisibility(View.GONE);
             }
         });
 
@@ -151,6 +192,7 @@ public class ProfileFragment extends Fragment {
                 recyclerViewMyPosts.setVisibility(View.GONE);
                 recyclerViewMyPlans.setVisibility(View.VISIBLE);
                 addPlanButton.setVisibility(View.VISIBLE);
+                recyclerViewMyPurchases.setVisibility(View.GONE);
             }
         });
 
@@ -158,6 +200,16 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showAddPlanDialog(getContext());
+            }
+        });
+
+        myPurchasesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerViewMyPosts.setVisibility(View.GONE);
+                recyclerViewMyPlans.setVisibility(View.GONE);
+                addPlanButton.setVisibility(View.GONE);
+                recyclerViewMyPurchases.setVisibility(View.VISIBLE);
             }
         });
 
@@ -173,8 +225,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-        recyclerViewMyPlans.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Initialize plan items list and adapter
         planItems = new ArrayList<>();
@@ -209,6 +259,7 @@ public class ProfileFragment extends Fragment {
         });
 
         fetchPosts();
+        fetchPurchases();
 
         return view ;
 
@@ -338,6 +389,62 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getActivity(), "Error fetching posts: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchPurchases() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("purchases").child(currentUser.getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                purchaseList.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    Purchase purchase = postSnapshot.getValue(Purchase.class);
+                    purchaseList.add(purchase);
+                }
+                // Notify your RecyclerView's adapter about the updated data
+                purchaseAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "Error fetching posts: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setBadge(String userType) {
+        TextView badge = getView().findViewById(R.id.badge);
+        Button becomeVipButton = getView().findViewById(R.id.become_vip_button);
+        badge.setText(userType.toUpperCase());
+
+        int backgroundResource;
+
+        switch (userType) {
+            case "vip user":
+                backgroundResource = R.drawable.badge_background_vip;
+                becomeVipButton.setVisibility(View.GONE);
+                break;
+            case "coach":
+                backgroundResource = R.drawable.badge_background_coach;
+                becomeVipButton.setVisibility(View.GONE);
+                break;
+            default:
+                backgroundResource = R.drawable.badge_background_common;
+                becomeVipButton.setVisibility(View.VISIBLE);
+                break;
+        }
+
+        badge.setBackgroundResource(backgroundResource);
+
+        becomeVipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference userTypeRef = FirebaseDatabase.getInstance().getReference("user_type").child(currentUser.getUid());
+                userTypeRef.setValue("vip user");
+                setBadge("vip user");
             }
         });
     }

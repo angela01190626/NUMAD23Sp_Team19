@@ -50,7 +50,7 @@ public class ChatFragment extends Fragment {
         // initialize databaseReference
         databaseReference = FirebaseDatabase.getInstance().getReference("user_final");
         // query database for chatList
-        queryDatabase();
+        // queryDatabase();
     }
 
     @SuppressLint("MissingInflatedId")
@@ -79,7 +79,7 @@ public class ChatFragment extends Fragment {
                     recyclerView.setAdapter(chatAdapter);
                 }
                 else {
-                    queryDatabase();
+                    // queryDatabase();
                 }
                 return true;
             }

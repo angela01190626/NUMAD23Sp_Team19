@@ -113,8 +113,8 @@ public class HomeFragment extends Fragment {
         imageItem coach4 = new imageItem(R.drawable.sample4,"Nancy");
         imageItem coach5 = new imageItem(R.drawable.sample5,"Jose");
         imageItem coach6 = new imageItem(R.drawable.sample6,"May");
-        imageItem coach7 = new imageItem(R.drawable.sample7,"Renzhao");
-        imageItem coach8 = new imageItem(R.drawable.sample8,"Karen");
+        imageItem coach7 = new imageItem(R.drawable.sample7,"Ronaldo");
+        imageItem coach8 = new imageItem(R.drawable.sample8,"Jordan");
         imageItem coach9 = new imageItem(R.drawable.sample9,"Ray");
         imageItem coach10 = new imageItem(R.drawable.sample10,"Zachary");
 
