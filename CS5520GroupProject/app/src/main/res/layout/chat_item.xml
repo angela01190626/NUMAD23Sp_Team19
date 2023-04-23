@@ -11,24 +11,17 @@
         android:layout_height="98dp">
 
         <TextView
-            android:id="@+id/chat_email"
-            android:layout_width="153dp"
-            android:layout_height="18dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="Email:"
-            app:layout_constraintStart_toEndOf="@+id/chat_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/chat_personName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
             android:text="Name:"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.018"
             app:layout_constraintStart_toEndOf="@+id/chat_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/chat_email" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.506" />
 
         <TextView
             android:id="@+id/chat_lastMessage"

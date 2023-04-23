@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="left"
-        android:text="Popular Coach"
+        android:text="Popular Coaches"
         android:textColor="@color/purple_500"
         android:textSize="18sp"
         android:textStyle="bold"

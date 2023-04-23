@@ -18,7 +18,6 @@ public class ChatViewHolder extends RecyclerView.ViewHolder {
     public ChatViewHolder(@NonNull View itemView) {
         super(itemView);
         this.friendName = itemView.findViewById(R.id.chat_personName);
-        this.friendEmail = itemView.findViewById(R.id.chat_email);
         this.sticker = itemView.findViewById(R.id.chat_avatar);
     }
 
