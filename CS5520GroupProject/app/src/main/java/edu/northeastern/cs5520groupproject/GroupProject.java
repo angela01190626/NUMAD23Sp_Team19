@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.ProfileFragment;
+import edu.northeastern.cs5520groupproject.mock.HomePageCourseMocker;
 import edu.northeastern.cs5520groupproject.shopping.ShoppingFragment;
 
 
@@ -47,6 +48,8 @@ public class GroupProject extends AppCompatActivity {
         setContentView(R.layout.homepage_project);
         OneSignal.initWithContext(this);
         OneSignal.setAppId("84878094-4ae4-418c-9633-45a7b9be30d1");
+//        HomePageCourseMocker mocker = new HomePageCourseMocker(this);
+//        mocker.createYogaMockCourses();
         signInLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {

@@ -1,9 +1,6 @@
 package edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView;
 
 
-import static android.content.ContentValues.TAG;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +10,12 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.PlanItem;
 import edu.northeastern.cs5520groupproject.R;
@@ -29,26 +23,6 @@ import edu.northeastern.cs5520groupproject.R;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private List<Course> courses; // 这里假设您已经定义了一个 Course 类，用于存储课程信息
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public TextView courseName;
-        public TextView courseDuration;
-        public TextView calorieCount;
-        public TextView level;
-
-        public TextView price;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
-            courseName = itemView.findViewById(R.id.course_name);
-            courseDuration = itemView.findViewById(R.id.course_duration);
-            calorieCount = itemView.findViewById(R.id.calorie_count);
-            level = itemView.findViewById(R.id.level);
-            price = itemView.findViewById(R.id.price);
-        }
-    }
 
     public MyAdapter(List<Course> courses) {
         this.courses = courses;
@@ -65,10 +39,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Course course = courses.get(position);
-        holder.imageView.setImageResource(course.getImageResource());
+
+        Glide.with(holder.imageView.getContext())
+                .load(course.getImageUrl())
+                .into(holder.imageView);
+
         holder.courseName.setText(course.getCourseName());
-        holder.courseDuration.setText(course.getTimeDuration());
-        holder.calorieCount.setText(course.getCalorieCount());
+        holder.courseDuration.setText(course.getDuration());
+        holder.calorieCount.setText(course.getCalorie());
         holder.level.setText(course.getLevel());
         holder.price.setText(course.getPrice());
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -95,5 +73,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return courses.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imageView;
+        public TextView courseName;
+        public TextView courseDuration;
+        public TextView calorieCount;
+        public TextView level;
+
+        public TextView price;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.imageView);
+            courseName = itemView.findViewById(R.id.course_name);
+            courseDuration = itemView.findViewById(R.id.course_duration);
+            calorieCount = itemView.findViewById(R.id.calorie_count);
+            level = itemView.findViewById(R.id.level);
+            price = itemView.findViewById(R.id.price);
+        }
     }
 }

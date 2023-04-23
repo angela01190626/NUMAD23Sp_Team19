@@ -25,7 +25,7 @@ public class YogaListFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Course> courses = new ArrayList<>();
 
-    private DatabaseReference database = FirebaseDatabase.getInstance().getReference("sports");
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference("homepage_courses_yoga");
 
 
     @Override
@@ -44,53 +44,53 @@ public class YogaListFragment extends Fragment {
     }
 
 
-    private void uploadData(){
-
-        DatabaseReference runRef = database.child("Yoga");
-
-        // 添加运动名称的数据
-        Course course1 = new Course("001","Flexibility improvement, full-body stretching","Mins: 33", "120-180 cal","level: K3",
-                R.drawable.yoga001,"Price: $20");
-        Course course2 = new Course("002","Hot yoga, full-body stretching","Mins: 29", "195-293 cal","level: K2",
-                R.drawable.yoga002, "Price: $12");
-
-        Course course3 = new Course("003","Full-body stretching, practiced on bed","Mins: 25", "201-300 cal","level: K2",
-                R.drawable.yoga003,"Price: $30");
-        Course course4 = new Course("004","Basic strength","Mins: 25", "88-132 cal","level: K2",
-                R.drawable.yoga004,"Price: $10");
-
-        Course course5 = new Course("005","Balance training","Mins: 20", "210-301 cal","level: K2",
-                R.drawable.yoga005,"Price: $5");
-        Course course6 = new Course("006","Lower body flexibility","Mins: 26", "286-328 cal","level: K2",
-                R.drawable.yoga006,"Price: $10");
-
-        Course course7 = new Course("007","Beginner waist and abdomen training","Mins: 23", "150-200 cal","level: K2",
-                R.drawable.yoga007,"Price: $5");
-        Course course8 = new Course("008","Beginner full-body workout","Mins: 28", "144-216 cal","level: K1",
-                R.drawable.yoga008,"Price: $10");
-
-        Course course9 = new Course("009","Relieve physical and mental fatigue","Mins: 11", "80-100 cal","level: K1",
-                R.drawable.yoga009,"Price: $8");
-        Course course10 = new Course("0010","X-shaped legs/calf external rotation","Mins: 15", "120-180 cal","level: K2",
-                R.drawable.yoga010,"Price: $9");
-
-
-        runRef.push().setValue(course1);
-        runRef.push().setValue(course2);
-        runRef.push().setValue(course3);
-        runRef.push().setValue(course4);
-        runRef.push().setValue(course5);
-        runRef.push().setValue(course6);
-        runRef.push().setValue(course7);
-        runRef.push().setValue(course8);
-        runRef.push().setValue(course9);
-        runRef.push().setValue(course10);
-
-    }
+//    private void uploadData(){
+//
+//        DatabaseReference runRef = database.child("Yoga");
+//
+//        // 添加运动名称的数据
+//        Course course1 = new Course("001","Flexibility improvement, full-body stretching","Mins: 33", "120-180 cal","level: K3",
+//                R.drawable.yoga001,"Price: $20");
+//        Course course2 = new Course("002","Hot yoga, full-body stretching","Mins: 29", "195-293 cal","level: K2",
+//                R.drawable.yoga002, "Price: $12");
+//
+//        Course course3 = new Course("003","Full-body stretching, practiced on bed","Mins: 25", "201-300 cal","level: K2",
+//                R.drawable.yoga003,"Price: $30");
+//        Course course4 = new Course("004","Basic strength","Mins: 25", "88-132 cal","level: K2",
+//                R.drawable.yoga004,"Price: $10");
+//
+//        Course course5 = new Course("005","Balance training","Mins: 20", "210-301 cal","level: K2",
+//                R.drawable.yoga005,"Price: $5");
+//        Course course6 = new Course("006","Lower body flexibility","Mins: 26", "286-328 cal","level: K2",
+//                R.drawable.yoga006,"Price: $10");
+//
+//        Course course7 = new Course("007","Beginner waist and abdomen training","Mins: 23", "150-200 cal","level: K2",
+//                R.drawable.yoga007,"Price: $5");
+//        Course course8 = new Course("008","Beginner full-body workout","Mins: 28", "144-216 cal","level: K1",
+//                R.drawable.yoga008,"Price: $10");
+//
+//        Course course9 = new Course("009","Relieve physical and mental fatigue","Mins: 11", "80-100 cal","level: K1",
+//                R.drawable.yoga009,"Price: $8");
+//        Course course10 = new Course("0010","X-shaped legs/calf external rotation","Mins: 15", "120-180 cal","level: K2",
+//                R.drawable.yoga010,"Price: $9");
+//
+//
+//        runRef.push().setValue(course1);
+//        runRef.push().setValue(course2);
+//        runRef.push().setValue(course3);
+//        runRef.push().setValue(course4);
+//        runRef.push().setValue(course5);
+//        runRef.push().setValue(course6);
+//        runRef.push().setValue(course7);
+//        runRef.push().setValue(course8);
+//        runRef.push().setValue(course9);
+//        runRef.push().setValue(course10);
+//
+//    }
 
     private void readData(){
         // 获取到运动名称节点的引用，例如 "run"
-        DatabaseReference runRef = database.child("Yoga");
+        DatabaseReference runRef = database;
 
         // 添加值事件监听器
         runRef.addListenerForSingleValueEvent(new ValueEventListener() {

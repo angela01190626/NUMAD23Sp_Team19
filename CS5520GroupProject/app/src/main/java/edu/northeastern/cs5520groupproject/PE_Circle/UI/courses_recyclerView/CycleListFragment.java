@@ -25,7 +25,7 @@ public class CycleListFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Course> courses = new ArrayList<>();
 
-    private DatabaseReference database = FirebaseDatabase.getInstance().getReference("sports");
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference("homepage_courses_bic");
 
 
     @Override
@@ -44,53 +44,53 @@ public class CycleListFragment extends Fragment {
     }
 
 
-    private void uploadData(){
-
-        DatabaseReference runRef = database.child("cycle");
-
-        // 添加运动名称的数据
-        Course course1 = new Course("001","Free run","Mins 30 ", "120-180 cal","level: K3",
-                R.drawable.bic001,"Price: $22");
-        Course course2 = new Course("002","15-minute aerobic fat-burning run","Mins: 15", "120-180 cal","level: K1",
-                R.drawable.bic002, "Price: $32");
-
-        Course course3 = new Course("003","Music fat-burning run","Mins: 25", "195-293 cal","level: K2",
-                R.drawable.bic003,"Price: $34");
-        Course course4 = new Course("004","Boys' 1000m special training","Mins: 36", "301-451 cal","level: K2",
-                R.drawable.bic004,"Price: $13");
-
-        Course course5 = new Course("005","Music stress-relieving run","Mins: 25", "88 - 132 cal","level: K2",
-                R.drawable.bic005,"Price: $9");
-        Course course6 = new Course("006","Speed engine","Mins: 30", "310-464 cal","level: K2",
-                R.drawable.bic006,"Price: $14");
-
-        Course course7 = new Course("007","Advanced fat-burning HIIT run","Mins: 29", "286-428 cal","level: K3",
-                R.drawable.bic007,"Price: $6");
-        Course course8 = new Course("008","Intensive fat-burning HIIT run","Mins: 35", "407-611 cal","level: K3",
-                R.drawable.bic008,"Price: $17");
-
-        Course course9 = new Course("009","Easy run for beginners","Mins: 20", "144 -216 cal","level: K1",
-                R.drawable.bic009,"Price: $28");
-        Course course10 = new Course("0010","35-minute aerobic fat-burning run 01","Mins: 35", "297-445 cal","level: K2",
-                R.drawable.bic010,"Price: $34");
-
-
-        runRef.push().setValue(course1);
-        runRef.push().setValue(course2);
-        runRef.push().setValue(course3);
-        runRef.push().setValue(course4);
-        runRef.push().setValue(course5);
-        runRef.push().setValue(course6);
-        runRef.push().setValue(course7);
-        runRef.push().setValue(course8);
-        runRef.push().setValue(course9);
-        runRef.push().setValue(course10);
-
-    }
+//    private void uploadData(){
+//
+//        DatabaseReference runRef = database.child("cycle");
+//
+//        // 添加运动名称的数据
+//        Course course1 = new Course("001","Free run","Mins 30 ", "120-180 cal","level: K3",
+//                R.drawable.bic001,"Price: $22");
+//        Course course2 = new Course("002","15-minute aerobic fat-burning run","Mins: 15", "120-180 cal","level: K1",
+//                R.drawable.bic002, "Price: $32");
+//
+//        Course course3 = new Course("003","Music fat-burning run","Mins: 25", "195-293 cal","level: K2",
+//                R.drawable.bic003,"Price: $34");
+//        Course course4 = new Course("004","Boys' 1000m special training","Mins: 36", "301-451 cal","level: K2",
+//                R.drawable.bic004,"Price: $13");
+//
+//        Course course5 = new Course("005","Music stress-relieving run","Mins: 25", "88 - 132 cal","level: K2",
+//                R.drawable.bic005,"Price: $9");
+//        Course course6 = new Course("006","Speed engine","Mins: 30", "310-464 cal","level: K2",
+//                R.drawable.bic006,"Price: $14");
+//
+//        Course course7 = new Course("007","Advanced fat-burning HIIT run","Mins: 29", "286-428 cal","level: K3",
+//                R.drawable.bic007,"Price: $6");
+//        Course course8 = new Course("008","Intensive fat-burning HIIT run","Mins: 35", "407-611 cal","level: K3",
+//                R.drawable.bic008,"Price: $17");
+//
+//        Course course9 = new Course("009","Easy run for beginners","Mins: 20", "144 -216 cal","level: K1",
+//                R.drawable.bic009,"Price: $28");
+//        Course course10 = new Course("0010","35-minute aerobic fat-burning run 01","Mins: 35", "297-445 cal","level: K2",
+//                R.drawable.bic010,"Price: $34");
+//
+//
+//        runRef.push().setValue(course1);
+//        runRef.push().setValue(course2);
+//        runRef.push().setValue(course3);
+//        runRef.push().setValue(course4);
+//        runRef.push().setValue(course5);
+//        runRef.push().setValue(course6);
+//        runRef.push().setValue(course7);
+//        runRef.push().setValue(course8);
+//        runRef.push().setValue(course9);
+//        runRef.push().setValue(course10);
+//
+//    }
 
     private void readData(){
         // 获取到运动名称节点的引用，例如 "run"
-        DatabaseReference runRef = database.child("cycle");
+        DatabaseReference runRef = database;
 
         // 添加值事件监听器
         runRef.addListenerForSingleValueEvent(new ValueEventListener() {

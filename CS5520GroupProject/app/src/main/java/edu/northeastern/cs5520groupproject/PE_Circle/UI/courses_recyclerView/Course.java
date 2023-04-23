@@ -4,24 +4,24 @@ public class Course {
 
     private String id;
     private String courseName;
-    private String timeDuration;
-    private String calorieCount;
+    private String duration;
+    private String calorie;
     private String level;
 
-    private int imageResource;
+    private String imageUrl;
 
     private String price;
 
     public Course() {
     }
 
-    public Course(String id, String courseName, String timeDuration, String calorieCount, String level, int imageResource, String price) {
+    public Course(String id, String courseName, String timeDuration, String calorieCount, String level, String imageResource, String price) {
         this.id = id;
         this.courseName = courseName;
-        this.timeDuration = timeDuration;
-        this.calorieCount = calorieCount;
+        this.duration = timeDuration;
+        this.calorie = calorieCount;
         this.level = level;
-        this.imageResource = imageResource;
+        this.imageUrl = imageResource;
         this.price = price;
     }
 
@@ -41,20 +41,20 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public String getTimeDuration() {
-        return timeDuration;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setTimeDuration(String timeDuration) {
-        this.timeDuration = timeDuration;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
-    public String getCalorieCount() {
-        return calorieCount;
+    public String getCalorie() {
+        return calorie;
     }
 
-    public void setCalorieCount(String calorieCount) {
-        this.calorieCount = calorieCount;
+    public void setCalorie(String calorie) {
+        this.calorie = calorie;
     }
 
     public String getLevel() {
@@ -65,12 +65,12 @@ public class Course {
         this.level = level;
     }
 
-    public int getImageResource() {
-        return imageResource;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getPrice() {
