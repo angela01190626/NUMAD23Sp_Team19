@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,17 +21,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.Chat;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatAdapter;
-import edu.northeastern.cs5520groupproject.PE_Circle.UI.chatpage_recycleView.ChatHistory;
-import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
 
 public class ChatFragment extends Fragment {
 
     private List<Chat> chatList = new ArrayList<>();
     private List<Chat> chatListFiltered = new ArrayList<>();
+
+    private List<String> chatListName = new ArrayList<>();
     private RecyclerView recyclerView;
     private ChatAdapter chatAdapter;
 
@@ -50,7 +51,7 @@ public class ChatFragment extends Fragment {
         // initialize databaseReference
         databaseReference = FirebaseDatabase.getInstance().getReference("user_final");
         // query database for chatList
-        // queryDatabase();
+        queryDatabase();
     }
 
     @SuppressLint("MissingInflatedId")
@@ -79,7 +80,7 @@ public class ChatFragment extends Fragment {
                     recyclerView.setAdapter(chatAdapter);
                 }
                 else {
-                    // queryDatabase();
+                    queryDatabase();
                 }
                 return true;
             }
@@ -90,16 +91,21 @@ public class ChatFragment extends Fragment {
 
     private void queryDatabase() {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         databaseReference = FirebaseDatabase.getInstance().getReference("FriendList");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 chatList.clear();
+                chatListName.clear();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     if (userSnapshot.getKey().equals(currentUserId)) {
                         for (DataSnapshot user : userSnapshot.getChildren()) {
                             Chat chat = user.getValue(Chat.class);
-                            chatList.add(chat);
+                            if (!chatListName.contains(chat.getName())) {
+                                chatList.add(chat);
+                                chatListName.add(chat.getName());
+                            }
                         }
                     }
                     else if (userSnapshot.getValue().toString().contains(currentUserId)) {
@@ -109,7 +115,10 @@ public class ChatFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Chat chat = dataSnapshot.getValue(Chat.class);
-                                chatList.add(chat);
+                                if (!chatListName.contains(chat.getName())) {
+                                    chatList.add(chat);
+                                    chatListName.add(chat.getName());
+                                }
                                 chatAdapter.notifyDataSetChanged();
                             }
 
@@ -130,5 +139,26 @@ public class ChatFragment extends Fragment {
             }
         });
     }
+//        databaseReference = FirebaseDatabase.getInstance().getReference("user_final");
+//        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                chatList.clear();
+//                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+//                    Chat chat = userSnapshot.getValue(Chat.class);
+//                    chatList.add(chat);
+//                }
+//
+//                // 在这里处理和显示用户列表
+//                chatAdapter = new ChatAdapter(chatList);
+//                recyclerView.setAdapter(chatAdapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // 错误处理
+//            }
+//        });
+//    }
 
 }
