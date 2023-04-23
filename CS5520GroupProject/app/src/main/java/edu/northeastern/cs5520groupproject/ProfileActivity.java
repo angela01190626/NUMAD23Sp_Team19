@@ -51,10 +51,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.PlanAdapter;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.PlanItem;
+import edu.northeastern.cs5520groupproject.chat.ChatMessageActivity;
 import edu.northeastern.cs5520groupproject.post.Post;
 import edu.northeastern.cs5520groupproject.post.PostAdapterInProfile;
 
@@ -81,6 +83,8 @@ public class ProfileActivity extends AppCompatActivity {
     private PostAdapterInProfile postAdapter;
     private List<Post> postList;
     private String publisherId;
+    private String publisherName;
+    ImageButton chatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +106,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
                 if (name != null) {
-                    profileName.setText("Name: " +name);
+                    publisherName = name;
+                    profileName.setText("Name: " + name);
                 } else {
                     profileEmail.setText("Unknown User");
                 }
@@ -111,6 +116,22 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(ProfileActivity.this, "Error fetching name: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        chatButton = findViewById(R.id.go_to_chat);
+        if (Objects.equals(publisherId, currentUser.getUid())) {
+            chatButton.setVisibility(View.GONE);
+        }
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String receiver = publisherName;
+                String receiverId = publisherId;
+                Intent chatIntent = new Intent(view.getContext(), ChatMessageActivity.class);
+                chatIntent.putExtra("receiver", receiver);
+                chatIntent.putExtra("receiverId", receiverId);
+                view.getContext().startActivity(chatIntent);
             }
         });
 

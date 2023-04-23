@@ -76,7 +76,7 @@ public class ChatFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() != 0) {
                     chatListFiltered = chatAdapter.filter(newText);
-                    chatAdapter = new ChatAdapter(chatListFiltered);
+                    chatAdapter = new ChatAdapter(getContext(), chatListFiltered);
                     recyclerView.setAdapter(chatAdapter);
                 }
                 else {
@@ -129,7 +129,7 @@ public class ChatFragment extends Fragment {
                         });
                     }
                 }
-                chatAdapter = new ChatAdapter(chatList);
+                chatAdapter = new ChatAdapter(getContext(), chatList);
                 recyclerView.setAdapter(chatAdapter);
 
             }
