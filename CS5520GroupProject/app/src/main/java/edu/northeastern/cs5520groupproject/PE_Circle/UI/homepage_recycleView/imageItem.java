@@ -2,29 +2,29 @@ package edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView;
 
 public class imageItem {
 
-    private int image;
-    private String username;
+    private String imageUrl;
+    private String name;
 
     public imageItem(){ }
 
-    public imageItem(int image, String username) {
-        this.image = image;
-        this.username = username;
+    public imageItem(String imageUrl, String username) {
+        this.imageUrl = imageUrl;
+        this.name = username;
     }
 
-    public int getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImage(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 }

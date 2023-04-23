@@ -86,6 +86,8 @@ public class ShoppingFragment extends Fragment implements CourseAdapter.OnPurcha
 
         Purchase purchase = new Purchase(courseId, price);
         purchasesRef.child(purchaseId).setValue(purchase);
+
+
     }
 
     private void fetchCourses() {

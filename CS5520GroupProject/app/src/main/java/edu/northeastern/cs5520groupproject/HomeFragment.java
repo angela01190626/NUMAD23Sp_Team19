@@ -137,34 +137,6 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-
-    public void uploadCoach(){
-
-
-        imageItem coach1 = new imageItem(R.drawable.jacky,"Jacky");
-        imageItem coach2 = new imageItem(R.drawable.jessica,"Jessica");
-        imageItem coach3 = new imageItem(R.drawable.david,"David");
-        imageItem coach4 = new imageItem(R.drawable.nancy,"Nancy");
-        imageItem coach5 = new imageItem(R.drawable.jose,"Jose");
-        imageItem coach6 = new imageItem(R.drawable.may,"May");
-        imageItem coach7 = new imageItem(R.drawable.ronaldo,"Ronaldo");
-        imageItem coach8 = new imageItem(R.drawable.jordan,"Jordan");
-        imageItem coach9 = new imageItem(R.drawable.ray,"Ray");
-        imageItem coach10 = new imageItem(R.drawable.zachary,"Zachary");
-
-        database.push().setValue(coach1);
-        database.push().setValue(coach2);
-        database.push().setValue(coach3);
-        database.push().setValue(coach4);
-        database.push().setValue(coach5);
-        database.push().setValue(coach6);
-        database.push().setValue(coach7);
-        database.push().setValue(coach8);
-        database.push().setValue(coach9);
-        database.push().setValue(coach10);
-
-    }
-
     public void readCoach(){
         // 获取到运动名称节点的引用，例如 "run"
         DatabaseReference coachRef = database;
