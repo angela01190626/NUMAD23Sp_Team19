@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CS5520GroupProject</string>
+    <string name="app_name">PE Circle</string>
     <string name="title_activity_pe_homepage">PE_Homepage_activity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

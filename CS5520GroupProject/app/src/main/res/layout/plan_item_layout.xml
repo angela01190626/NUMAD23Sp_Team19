@@ -18,7 +18,7 @@
         android:text="Sample Plan Item"
         android:textAlignment="center"
         android:textColor="#3A405A"
-        android:textSize="15sp" />
+        android:textSize="12sp" />
 
     <View
         android:id="@+id/spacerView"
