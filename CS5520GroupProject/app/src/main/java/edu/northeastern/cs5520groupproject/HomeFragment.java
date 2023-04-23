@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
         cycleButton = v.findViewById(R.id.cycling_button);
         trainButton = v.findViewById(R.id.strength_training_button);
 
-        //uploadCoach(); only need upload one time
+        // uploadCoach();
         readCoach();
 
 
@@ -141,16 +141,16 @@ public class HomeFragment extends Fragment {
     public void uploadCoach(){
 
 
-        imageItem coach1 = new imageItem(R.drawable.sample1,"Jacky");
-        imageItem coach2 = new imageItem(R.drawable.sample2,"Jessica");
-        imageItem coach3 = new imageItem(R.drawable.sample3,"David");
-        imageItem coach4 = new imageItem(R.drawable.sample4,"Nancy");
-        imageItem coach5 = new imageItem(R.drawable.sample5,"Jose");
-        imageItem coach6 = new imageItem(R.drawable.sample6,"May");
-        imageItem coach7 = new imageItem(R.drawable.sample7,"Ronaldo");
-        imageItem coach8 = new imageItem(R.drawable.sample8,"Jordan");
-        imageItem coach9 = new imageItem(R.drawable.sample9,"Ray");
-        imageItem coach10 = new imageItem(R.drawable.sample10,"Zachary");
+        imageItem coach1 = new imageItem(R.drawable.jacky,"Jacky");
+        imageItem coach2 = new imageItem(R.drawable.jessica,"Jessica");
+        imageItem coach3 = new imageItem(R.drawable.david,"David");
+        imageItem coach4 = new imageItem(R.drawable.nancy,"Nancy");
+        imageItem coach5 = new imageItem(R.drawable.jose,"Jose");
+        imageItem coach6 = new imageItem(R.drawable.may,"May");
+        imageItem coach7 = new imageItem(R.drawable.ronaldo,"Ronaldo");
+        imageItem coach8 = new imageItem(R.drawable.jordan,"Jordan");
+        imageItem coach9 = new imageItem(R.drawable.ray,"Ray");
+        imageItem coach10 = new imageItem(R.drawable.zachary,"Zachary");
 
         database.push().setValue(coach1);
         database.push().setValue(coach2);
