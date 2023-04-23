@@ -1,5 +1,7 @@
 package edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +44,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         return new ImageViewHolder(view);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         imageItem coach = coachs.get(position);
-        holder.imageView.setImageResource(coach.getImage());
+        int targetWidth = holder.imageView.getWidth();
+        int targetHeight = (int) (targetWidth * 1.5);
+        Glide.with(holder.imageView.getContext())
+                .load(coach.getImage())
+                .override(targetWidth, targetHeight)
+                .fitCenter()
+                .into(holder.imageView);
         holder.usernameView.setText(coach.getUsername());
 
         holder.likeIcon.setOnClickListener(new View.OnClickListener() {

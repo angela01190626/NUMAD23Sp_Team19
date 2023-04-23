@@ -218,7 +218,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Initialize plan items list and adapter
         planItems = new ArrayList<>();
-        planAdapter = new PlanAdapter(planItems);
+        planAdapter = new PlanAdapter(planItems, false);
         recyclerViewMyPlans.setAdapter(planAdapter);
         databaseRef = FirebaseDatabase.getInstance().getReference("plan");
 

@@ -228,7 +228,7 @@ public class ProfileFragment extends Fragment {
 
         // Initialize plan items list and adapter
         planItems = new ArrayList<>();
-        planAdapter = new PlanAdapter(planItems);
+        planAdapter = new PlanAdapter(planItems, true);
         recyclerViewMyPlans.setAdapter(planAdapter);
         databaseRef = FirebaseDatabase.getInstance().getReference("plan");
 

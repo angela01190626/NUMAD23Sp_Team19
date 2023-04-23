@@ -22,9 +22,11 @@ import edu.northeastern.cs5520groupproject.R;
 public class PlanAdapter extends RecyclerView.Adapter<PlanViewHolder> {
     private List<PlanItem> planItems;
     public  DatabaseReference databaseRef;
+    private boolean showDeleteButton;
 
-    public PlanAdapter(List<PlanItem> planItems) {
+    public PlanAdapter(List<PlanItem> planItems, boolean showDeleteButton) {
         this.planItems = planItems;
+        this.showDeleteButton = showDeleteButton;
     }
 
     @Override
@@ -36,25 +38,28 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanViewHolder> {
     @Override
     public void onBindViewHolder(PlanViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PlanItem planItem = planItems.get(position);
-        holder.bind(planItem);
-        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                databaseRef = FirebaseDatabase.getInstance().getReference("plan");
-                databaseRef.child(uid).child(planItem.getId()).removeValue();
-                planItems.remove(position) ;
-                notifyDataSetChanged();
+        holder.bind(planItem, showDeleteButton);
+        if (showDeleteButton) {
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    databaseRef = FirebaseDatabase.getInstance().getReference("plan");
+                    databaseRef.child(uid).child(planItem.getId()).removeValue();
+                    planItems.remove(position);
+                    notifyDataSetChanged();
 
-                //
-
-                Log.d(TAG,"deleted");
-            }
-        });
+                    Log.d(TAG, "deleted");
+                }
+            });
+        } else {
+            holder.deleteButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
         return planItems.size();
 
-    }}
+    }
+}
