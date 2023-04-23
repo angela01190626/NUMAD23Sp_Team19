@@ -19,9 +19,6 @@
             android:name=".chat.ChatMessageActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatFragment"
-            android:exported="false" />
-        <activity
             android:name=".history.usage_history"
             android:exported="false" />
         <activity
