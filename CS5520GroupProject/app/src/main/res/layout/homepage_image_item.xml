@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/userName_home"
-            android:layout_width="148dp"
+            android:layout_width="96dp"
             android:layout_height="match_parent"
             android:text="username"
             android:textSize="16sp"
