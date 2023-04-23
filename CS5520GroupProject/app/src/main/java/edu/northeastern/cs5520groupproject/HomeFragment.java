@@ -25,7 +25,9 @@ import java.util.List;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.Course;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.CourseListFragment;
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.CycleListFragment;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.MyAdapter;
+import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.TrainListFragment;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.courses_recyclerView.YogaListFragment;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView.ImageAdapter;
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.homepage_recycleView.SpaceItemDecoration;
@@ -35,6 +37,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ImageButton runButton;
     private ImageButton yogaButton;
+    private ImageButton cycleButton;
+    private ImageButton trainButton;
 
     private DatabaseReference database = FirebaseDatabase.getInstance().getReference("coach");
 
@@ -60,6 +64,8 @@ public class HomeFragment extends Fragment {
 
         runButton =  v.findViewById(R.id.running_button);
         yogaButton = v.findViewById(R.id.yoga_button);
+        cycleButton = v.findViewById(R.id.cycling_button);
+        trainButton = v.findViewById(R.id.strength_training_button);
 
         //uploadCoach(); only need upload one time
         readCoach();
@@ -98,6 +104,34 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        cycleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 创建一个新的 Fragment 实例
+                CycleListFragment cycleListFragment = new CycleListFragment();
+
+                // 将该 Fragment 添加到 Activity 中
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, cycleListFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        trainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 创建一个新的 Fragment 实例
+                TrainListFragment trainListFragment = new TrainListFragment();
+
+                // 将该 Fragment 添加到 Activity 中
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, trainListFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
 
 
         return v;
@@ -113,8 +147,8 @@ public class HomeFragment extends Fragment {
         imageItem coach4 = new imageItem(R.drawable.sample4,"Nancy");
         imageItem coach5 = new imageItem(R.drawable.sample5,"Jose");
         imageItem coach6 = new imageItem(R.drawable.sample6,"May");
-        imageItem coach7 = new imageItem(R.drawable.sample7,"Renzhao");
-        imageItem coach8 = new imageItem(R.drawable.sample8,"Karen");
+        imageItem coach7 = new imageItem(R.drawable.sample7,"Ronaldo");
+        imageItem coach8 = new imageItem(R.drawable.sample8,"Jordan");
         imageItem coach9 = new imageItem(R.drawable.sample9,"Ray");
         imageItem coach10 = new imageItem(R.drawable.sample10,"Zachary");
 

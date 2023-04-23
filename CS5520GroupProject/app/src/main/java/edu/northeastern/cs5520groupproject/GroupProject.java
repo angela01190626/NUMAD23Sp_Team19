@@ -31,6 +31,8 @@ import java.util.Map;
 
 import edu.northeastern.cs5520groupproject.PE_Circle.UI.profile.ProfileFragment;
 import edu.northeastern.cs5520groupproject.chat.chatMessageActivity;
+import edu.northeastern.cs5520groupproject.mock.CourseMocker;
+import edu.northeastern.cs5520groupproject.shopping.ShoppingFragment;
 
 
 public class GroupProject extends AppCompatActivity {
@@ -140,6 +142,9 @@ public class GroupProject extends AppCompatActivity {
                     case R.id.navigation_post:
                         // 在这里处理发布图标点击
                         loadFragment(new PostFragment());
+                        return true;
+                    case R.id.navigation_shopping:
+                        loadFragment(new ShoppingFragment());
                         return true;
                 }
                 return false;

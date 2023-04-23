@@ -22,10 +22,6 @@
             android:name=".ChatFragment"
             android:exported="false" />
         <activity
-            android:name=".PE_Homepage_activity"
-            android:exported="false"
-            android:label="@string/title_activity_pe_homepage" />
-        <activity
             android:name=".history.usage_history"
             android:exported="false" />
         <activity
@@ -51,6 +47,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,6 +57,9 @@
         </activity>
         <activity
             android:name=".AddPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
             android:exported="false" />
 
         <service

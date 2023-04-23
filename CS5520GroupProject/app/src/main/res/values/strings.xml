@@ -13,4 +13,6 @@
     <string name="my_posts_button">My Posts</string>
     <string name="my_plans_button">My Plans</string>
     <string name="add_plan">Add Plan</string>
+    <string name="shop">Shop</string>
+    <string name="my_purchases">My Purchases</string>
 </resources>
