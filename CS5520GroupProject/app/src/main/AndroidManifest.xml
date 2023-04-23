@@ -16,13 +16,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".About"
+            android:name=".chat.ChatMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatFragment"
             android:exported="false" />
         <activity
             android:name=".history.usage_history"
             android:exported="false" />
         <activity
-            android:name=".MovieEnter"
+            android:name=".legacy.MovieEnter"
             android:exported="false" />
         <activity
             android:name=".login.login_activity"
@@ -37,13 +40,14 @@
             android:name=".AtYourService"
             android:exported="false" />
         <activity
-            android:name=".HomePageActivity"
+            android:name=".legacy.HomePageActivity"
             android:exported="false" />
         <activity
-            android:name=".Count"
+            android:name=".legacy.Count"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,6 +55,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AddPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
 
         <service
             android:name=".service.BackendMessageService"

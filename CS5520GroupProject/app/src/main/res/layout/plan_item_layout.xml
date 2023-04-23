@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/planLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/cardview_light_background"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/planItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#44ffffff"
+        android:text="Sample Plan Item"
+        android:textAlignment="center"
+        android:textColor="#3A405A"
+        android:textSize="15sp" />
+
+    <View
+        android:id="@+id/spacerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/delete_plan_item_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:textSize="15sp" />
+
+</LinearLayout>
