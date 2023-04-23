@@ -51,7 +51,7 @@ public class ChatFragment extends Fragment {
         // initialize databaseReference
         databaseReference = FirebaseDatabase.getInstance().getReference("user_final");
         // query database for chatList
-        // queryDatabase();
+        queryDatabase();
     }
 
     @SuppressLint("MissingInflatedId")
@@ -80,7 +80,7 @@ public class ChatFragment extends Fragment {
                     recyclerView.setAdapter(chatAdapter);
                 }
                 else {
-                    // queryDatabase();
+                    queryDatabase();
                 }
                 return true;
             }
@@ -90,55 +90,55 @@ public class ChatFragment extends Fragment {
     }
 
     private void queryDatabase() {
-                String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                databaseReference = FirebaseDatabase.getInstance().getReference("FriendList");
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        chatList.clear();
-                        chatListName.clear();
-                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            if (userSnapshot.getKey().equals(currentUserId)) {
-                                for (DataSnapshot user : userSnapshot.getChildren()) {
-                                    Chat chat = user.getValue(Chat.class);
-                                    if (!chatListName.contains(chat.getName())) {
-                                        chatList.add(chat);
-                                        chatListName.add(chat.getName());
-                                    }
-                                }
-                            }
-                            else if (userSnapshot.getValue().toString().contains(currentUserId)) {
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user_final")
-                                        .child(userSnapshot.getKey());
-                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        Chat chat = dataSnapshot.getValue(Chat.class);
-                                        if (!chatListName.contains(chat.getName())) {
-                                            chatList.add(chat);
-                                            chatListName.add(chat.getName());
-                                        }
-                                        chatAdapter.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        // Handle errors here
-                                    }
-                                });
+        databaseReference = FirebaseDatabase.getInstance().getReference("FriendList");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                chatList.clear();
+                chatListName.clear();
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    if (userSnapshot.getKey().equals(currentUserId)) {
+                        for (DataSnapshot user : userSnapshot.getChildren()) {
+                            Chat chat = user.getValue(Chat.class);
+                            if (!chatListName.contains(chat.getName())) {
+                                chatList.add(chat);
+                                chatListName.add(chat.getName());
                             }
                         }
-                        chatAdapter = new ChatAdapter(chatList);
-                        recyclerView.setAdapter(chatAdapter);
+                    }
+                    else if (userSnapshot.getValue().toString().contains(currentUserId)) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user_final")
+                                .child(userSnapshot.getKey());
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Chat chat = dataSnapshot.getValue(Chat.class);
+                                if (!chatListName.contains(chat.getName())) {
+                                    chatList.add(chat);
+                                    chatListName.add(chat.getName());
+                                }
+                                chatAdapter.notifyDataSetChanged();
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Handle errors here
+                            }
+                        });
                     }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // 错误处理
-                    }
-                });
+                }
+                chatAdapter = new ChatAdapter(chatList);
+                recyclerView.setAdapter(chatAdapter);
+
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 错误处理
+            }
+        });
+    }
 //        databaseReference = FirebaseDatabase.getInstance().getReference("user_final");
 //        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override
@@ -146,10 +146,6 @@ public class ChatFragment extends Fragment {
 //                chatList.clear();
 //                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
 //                    Chat chat = userSnapshot.getValue(Chat.class);
-//                    //String email = chat.getEmail();
-//                    //String name = chat.getName();
-//                    //String uid = chat.getUid();
-//                    //Chat newChat = new Chat(email,name,uid);
 //                    chatList.add(chat);
 //                }
 //

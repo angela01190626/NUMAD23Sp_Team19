@@ -97,23 +97,22 @@ public class chatMessageActivity extends AppCompatActivity {
 
                 Message message = new Message(input.getText().toString(), currentUser.getDisplayName() + "-" + receiver);
                 String messageId = mDatabaseRef.child("userId")
-                        .child(currentUser.getUid()).push().getKey();
-                mDatabaseRef.child("userId").child(currentUser.getUid())
+                        .child(currentUser.getUid() + "|" + receiverId).push().getKey();
+                mDatabaseRef.child("userId").child(currentUser.getUid() + "|" + receiverId)
                         .child(messageId).setValue(message);
-                mDatabaseRef.child("userId").child(currentUser.getUid()).child(messageId)
-                        .child("receiver").setValue(receiver);
+                mDatabaseRef.child("userId").child(currentUser.getUid() + "|" + receiverId)
+                        .child(messageId).child("receiver").setValue(receiver);
 
                 Message receiverMessage = new Message(input.getText().toString(), currentUser.getDisplayName() + "-" + receiver);
                 String receiverMessageId = mDatabaseRef.child("userId")
-                        .child(receiverId).push().getKey();
-                mDatabaseRef.child("userId").child(receiverId)
+                        .child(receiverId + "|" + currentUser.getUid()).push().getKey();
+                mDatabaseRef.child("userId").child(receiverId + "|" + currentUser.getUid())
                         .child(receiverMessageId).setValue(receiverMessage);
-                mDatabaseRef.child("userId").child(receiverId).child(receiverMessageId)
-                        .child("sender").setValue(currentUser.getDisplayName());
+                mDatabaseRef.child("userId").child(receiverId + "|" + currentUser.getUid())
+                        .child(receiverMessageId).child("sender").setValue(currentUser.getDisplayName());
 
                 if (!mDatabaseFriend.child(currentUser.getUid()).toString().contains(receiverId)) {
-                    String friendId = mDatabaseFriend.child(currentUser.getUid()).push().getKey();
-                    mDatabaseFriend.child(currentUser.getUid()).child(friendId)
+                    mDatabaseFriend.child(currentUser.getUid()).child(currentUser.getUid() + "|" + receiverId)
                             .setValue(new Chat(receiverId, receiver));
                 }
 
@@ -166,16 +165,14 @@ public class chatMessageActivity extends AppCompatActivity {
         DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference("chatHistory").child("userId");
 
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.pe_message_list
-                ,messageRef.child(userId)) {
+                ,messageRef.child(userId + "|" + receiverId)) {
             @Override
             protected void populateView(View v, Message model, int position) {
 
                 TextView messageText = v.findViewById(R.id.message_text);
                 TextView messageUser = v.findViewById(R.id.message_user);
                 TextView messageTime = v.findViewById(R.id.message_time);
-                System.out.println(name);
-                System.out.println(receiver);
-                System.out.println(model.getUser());
+
                 // set text
                 if (model.getUser().equals(name + "-" + receiver)
                         || model.getUser().equals(receiver + "-" + name)) {
